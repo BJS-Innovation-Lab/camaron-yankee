@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camarón Yankee — Reservaciones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#0a3d62;--accent:#e8a838;--sand:#f5f0e8;--ocean:#1a6b8a;
+  --text:#2c2c2c;--white:#fff;--glass:rgba(255,255,255,0.85);
+}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--sand);min-height:100vh}
+
+/* HERO */
+.hero{
+  position:relative;min-height:55vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  background:linear-gradient(135deg,#0a3d62 0%,#1a6b8a 40%,#e8a838 100%);
+  padding:2rem 1rem;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:80px;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80Z' fill='%23f5f0e8'/%3E%3C/svg%3E") no-repeat bottom;
+  background-size:cover;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;font-size:2.8rem;color:var(--white);
+  text-shadow:0 2px 20px rgba(0,0,0,0.3);margin-bottom:.5rem;
+}
+.hero p{color:rgba(255,255,255,0.9);font-size:1.1rem;font-weight:300;max-width:400px}
+.hero-badge{
+  display:inline-block;background:var(--accent);color:var(--primary);
+  padding:.4rem 1.2rem;border-radius:20px;font-weight:600;font-size:.85rem;
+  margin-top:1rem;letter-spacing:.5px;
+}
+.shrimp-icon{font-size:3rem;margin-bottom:.5rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2))}
+
+/* CONTAINER */
+.container{max-width:480px;margin:0 auto;padding:0 1rem 3rem}
+
+/* SECTION */
+.section{margin-top:1.5rem}
+.section-title{
+  font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--primary);
+  margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem;
+}
+
+/* DATE/TIME */
+.date-row{display:flex;gap:.75rem}
+.date-row>div{flex:1}
+label{display:block;font-size:.8rem;font-weight:500;color:#666;margin-bottom:.3rem}
+input,select{
+  width:100%;padding:.75rem;border:1.5px solid #ddd;border-radius:12px;
+  font-size:1rem;font-family:'Inter',sans-serif;background:var(--white);
+  transition:border .2s;
+}
+input:focus,select:focus{outline:none;border-color:var(--ocean)}
+
+/* GUESTS */
+.guests-control{
+  display:flex;align-items:center;gap:1rem;background:var(--white);
+  border-radius:12px;padding:.6rem 1rem;border:1.5px solid #ddd;
+}
+.guests-control button{
+  width:36px;height:36px;border-radius:50%;border:none;
+  background:var(--primary);color:var(--white);font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.guests-control button:active{transform:scale(.95)}
+.guests-control span{font-size:1.3rem;font-weight:600;min-width:30px;text-align:center}
+
+/* ZONE TABS */
+.zone-tabs{display:flex;gap:.5rem;margin-bottom:1rem}
+.zone-tab{
+  flex:1;padding:.8rem;border:2px solid #ddd;border-radius:14px;
+  text-align:center;cursor:pointer;background:var(--white);transition:.2s;
+}
+.zone-tab.active{border-color:var(--ocean);background:var(--ocean);color:var(--white)}
+.zone-tab .zone-icon{font-size:1.5rem;display:block;margin-bottom:.3rem}
+.zone-tab .zone-name{font-size:.85rem;font-weight:600}
+.zone-tab .zone-desc{font-size:.7rem;opacity:.7}
+
+/* TABLE MAP */
+.table-map{
+  background:var(--white);border-radius:16px;padding:1.2rem;
+  border:1.5px solid #ddd;min-height:300px;position:relative;
+}
+.map-label{
+  position:absolute;font-size:.65rem;color:#999;font-weight:500;
+  text-transform:uppercase;letter-spacing:1px;
+}
+.map-label.top{top:8px;left:50%;transform:translateX(-50%)}
+.map-label.bottom{bottom:8px;left:50%;transform:translateX(-50%)}
+.map-label.left{left:8px;top:50%;transform:translateY(-50%) rotate(-90deg)}
+
+.tables-grid{
+  display:grid;gap:.6rem;padding:.5rem;
+}
+.tables-grid.comedor{grid-template-columns:repeat(3,1fr)}
+.tables-grid.playa{grid-template-columns:repeat(2,1fr)}
+
+.table-item{
+  aspect-ratio:1;border-radius:14px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;cursor:pointer;
+  border:2px solid #e0e0e0;transition:.2s;position:relative;
+  background:var(--white);
+}
+.table-item:hover{border-color:var(--ocean);transform:scale(1.03)}
+.table-item.selected{border-color:var(--accent);background:rgba(232,168,56,0.1)}
+.table-item.occupied{opacity:.4;cursor:not-allowed;background:#f0f0f0}
+.table-item .t-icon{font-size:1.6rem}
+.table-item .t-name{font-size:.75rem;font-weight:600;margin-top:.2rem}
+.table-item .t-seats{font-size:.65rem;color:#888}
+.table-item.selected::after{
+  content:'✓';position:absolute;top:6px;right:8px;
+  background:var(--accent);color:var(--white);width:20px;height:20px;
+  border-radius:50%;font-size:.7rem;display:flex;align-items:center;justify-content:center;
+}
+
+/* FORM */
+.form-group{margin-bottom:1rem}
+textarea{
+  width:100%;padding:.75rem;border:1.5px solid #ddd;border-radius:12px;
+  font-size:1rem;font-family:'Inter',sans-serif;resize:none;height:80px;
+}
+textarea:focus{outline:none;border-color:var(--ocean)}
+
+/* CTA */
+.btn-reserve{
+  width:100%;padding:1rem;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--ocean));
+  color:var(--white);font-size:1.1rem;font-weight:600;cursor:pointer;
+  font-family:'Inter',sans-serif;margin-top:1rem;
+  box-shadow:0 4px 15px rgba(10,61,98,0.3);transition:.2s;
+}
+.btn-reserve:active{transform:scale(.98)}
+.btn-reserve:disabled{opacity:.5;cursor:not-allowed}
+
+/* LEGEND */
+.legend{display:flex;gap:1rem;margin-top:.8rem;justify-content:center;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:.3rem;font-size:.75rem;color:#888}
+.legend-dot{width:12px;height:12px;border-radius:4px;border:2px solid}
+.legend-dot.available{border-color:#e0e0e0;background:var(--white)}
+.legend-dot.selected{border-color:var(--accent);background:rgba(232,168,56,0.1)}
+.legend-dot.occupied{border-color:#ccc;background:#f0f0f0}
+
+/* SUCCESS MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;
+  align-items:center;justify-content:center;z-index:100;padding:1rem;
+}
+.modal-overlay.show{display:flex}
+.modal{
+  background:var(--white);border-radius:20px;padding:2rem;text-align:center;
+  max-width:380px;width:100%;animation:popIn .3s ease;
+}
+@keyframes popIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.modal .check{font-size:3rem;margin-bottom:.5rem}
+.modal h2{font-family:'Playfair Display',serif;color:var(--primary);margin-bottom:.5rem}
+.modal p{color:#666;font-size:.9rem;line-height:1.5}
+.modal .detail{
+  background:var(--sand);border-radius:12px;padding:1rem;margin:1rem 0;
+  text-align:left;font-size:.85rem;
+}
+.modal .detail div{margin-bottom:.3rem}
+.modal .detail strong{color:var(--primary)}
+.modal button{
+  padding:.8rem 2rem;border:none;border-radius:12px;background:var(--ocean);
+  color:var(--white);font-size:1rem;font-weight:600;cursor:pointer;margin-top:.5rem;
+}
+
+/* FOOTER */
+.footer{text-align:center;padding:1.5rem;font-size:.75rem;color:#aaa}
+.footer a{color:var(--ocean)}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="shrimp-icon">🦐</div>
+  <h1>Camarón Yankee</h1>
+  <p>Mariscos frente al mar · Acapulco, Guerrero</p>
+  <div class="hero-badge">📍 Reserva tu mesa</div>
+</div>
+
+<div class="container">
+  <!-- DATE & TIME -->
+  <div class="section">
+    <div class="section-title">📅 Fecha y Hora</div>
+    <div class="date-row">
+      <div>
+        <label>Fecha</label>
+        <input type="date" id="date">
+      </div>
+      <div>
+        <label>Hora</label>
+        <select id="time">
+          <option value="">Seleccionar...</option>
+          <option>12:00 PM</option>
+          <option>12:30 PM</option>
+          <option>1:00 PM</option>
+          <option>1:30 PM</option>
+          <option>2:00 PM</option>
+          <option>2:30 PM</option>
+          <option>3:00 PM</option>
+          <option>3:30 PM</option>
+          <option>4:00 PM</option>
+          <option>5:00 PM</option>
+          <option>6:00 PM</option>
+          <option>6:30 PM</option>
+          <option>7:00 PM</option>
+          <option>7:30 PM</option>
+          <option>8:00 PM</option>
+          <option>8:30 PM</option>
+          <option>9:00 PM</option>
+          <option>9:30 PM</option>
+          <option>10:00 PM</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUESTS -->
+  <div class="section">
+    <div class="section-title">👥 Comensales</div>
+    <div class="guests-control">
+      <button onclick="changeGuests(-1)">−</button>
+      <span id="guests">2</span>
+      <button onclick="changeGuests(1)">+</button>
+      <span style="font-size:.85rem;color:#888;margin-left:auto">personas</span>
+    </div>
+  </div>
+
+  <!-- ZONE -->
+  <div class="section">
+    <div class="section-title">🏖️ Zona</div>
+    <div class="zone-tabs">
+      <div class="zone-tab active" onclick="selectZone('comedor')">
+        <span class="zone-icon">🍽️</span>
+        <div class="zone-name">Comedor</div>
+        <div class="zone-desc">Interior con A/C</div>
+      </div>
+      <div class="zone-tab" onclick="selectZone('playa')">
+        <span class="zone-icon">🌊</span>
+        <div class="zone-name">Playa</div>
+        <div class="zone-desc">Vista al mar</div>
+      </div>
+    </div>
+
+    <!-- TABLE MAP -->
+    <div class="table-map">
+      <div class="map-label top" id="mapTopLabel">ENTRADA</div>
+      <div class="map-label bottom" id="mapBottomLabel">COCINA</div>
+      <div id="tablesContainer"></div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot available"></div>Disponible</div>
+      <div class="legend-item"><div class="legend-dot selected"></div>Seleccionada</div>
+      <div class="legend-item"><div class="legend-dot occupied"></div>Ocupada</div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section">
+    <div class="section-title">📱 Datos de contacto</div>
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" id="name" placeholder="Tu nombre completo">
+    </div>
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="tel" id="phone" placeholder="744 123 4567">
+    </div>
+    <div class="form-group">
+      <label>Notas especiales (opcional)</label>
+      <textarea id="notes" placeholder="Cumpleaños, alergias, silla para bebé..."></textarea>
+    </div>
+  </div>
+
+  <button class="btn-reserve" id="btnReserve" onclick="submitReservation()">
+    🦐 Confirmar Reservación
+  </button>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="check">🎉</div>
+    <h2>¡Reservación Confirmada!</h2>
+    <p>Te esperamos en Camarón Yankee</p>
+    <div class="detail" id="confirmDetail"></div>
+    <p style="font-size:.8rem;color:#999">Recibirás confirmación por WhatsApp</p>
+    <button onclick="closeModal()">Listo</button>
+  </div>
+</div>
+
+<div class="footer">
+  Camarón Yankee · Acapulco, Guerrero<br>
+  Hecho con 🩷 por <a href="https://vulkn-ai.com" target="_blank">VULKN</a>
+</div>
+
+<script>
+// Tables config
+const tables = {
+  comedor: [
+    {id:'C1',name:'Mesa 1',seats:2,icon:'🪑',occupied:false},
+    {id:'C2',name:'Mesa 2',seats:2,icon:'🪑',occupied:false},
+    {id:'C3',name:'Mesa 3',seats:4,icon:'🪑',occupied:true},
+    {id:'C4',name:'Mesa 4',seats:4,icon:'🪑',occupied:false},
+    {id:'C5',name:'Mesa 5',seats:6,icon:'🪑',occupied:false},
+    {id:'C6',name:'Mesa 6',seats:6,icon:'🪑',occupied:true},
+    {id:'C7',name:'Mesa 7',seats:2,icon:'🪑',occupied:false},
+    {id:'C8',name:'Mesa 8',seats:4,icon:'🪑',occupied:false},
+    {id:'C9',name:'Mesa 9',seats:8,icon:'🪑',occupied:false},
+  ],
+  playa: [
+    {id:'P1',name:'Palapa 1',seats:4,icon:'⛱️',occupied:false},
+    {id:'P2',name:'Palapa 2',seats:4,icon:'⛱️',occupied:true},
+    {id:'P3',name:'Palapa 3',seats:6,icon:'⛱️',occupied:false},
+    {id:'P4',name:'Palapa 4',seats:6,icon:'⛱️',occupied:false},
+    {id:'P5',name:'Palapa 5',seats:8,icon:'🏖️',occupied:false},
+    {id:'P6',name:'Palapa 6',seats:8,icon:'🏖️',occupied:false},
+  ]
+};
+
+let currentZone = 'comedor';
+let selectedTable = null;
+let guestCount = 2;
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  const today = new Date();
+  today.setDate(today.getDate());
+  document.getElementById('date').min = today.toISOString().split('T')[0];
+  document.getElementById('date').value = today.toISOString().split('T')[0];
+  renderTables();
+});
+
+function selectZone(zone) {
+  currentZone = zone;
+  selectedTable = null;
+  document.querySelectorAll('.zone-tab').forEach(t => t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  
+  const topLabel = document.getElementById('mapTopLabel');
+  const bottomLabel = document.getElementById('mapBottomLabel');
+  if(zone === 'comedor'){
+    topLabel.textContent = 'ENTRADA';
+    bottomLabel.textContent = 'COCINA';
+  } else {
+    topLabel.textContent = 'RESTAURANTE';
+    bottomLabel.textContent = '🌊 MAR';
+  }
+  renderTables();
+}
+
+function renderTables() {
+  const container = document.getElementById('tablesContainer');
+  const items = tables[currentZone];
+  container.innerHTML = `<div class="tables-grid ${currentZone}">${
+    items.map(t => `
+      <div class="table-item ${t.occupied?'occupied':''} ${selectedTable===t.id?'selected':''}" 
+           onclick="${t.occupied?'':'selectTable(\''+t.id+'\')'}">
+        <span class="t-icon">${t.icon}</span>
+        <span class="t-name">${t.name}</span>
+        <span class="t-seats">${t.seats} personas</span>
+      </div>
+    `).join('')
+  }</div>`;
+}
+
+function selectTable(id) {
+  selectedTable = selectedTable === id ? null : id;
+  renderTables();
+}
+
+function changeGuests(delta) {
+  guestCount = Math.max(1, Math.min(20, guestCount + delta));
+  document.getElementById('guests').textContent = guestCount;
+}
+
+function submitReservation() {
+  const date = document.getElementById('date').value;
+  const time = document.getElementById('time').value;
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const notes = document.getElementById('notes').value.trim();
+
+  if(!date || !time){return alert('Selecciona fecha y hora')}
+  if(!selectedTable){return alert('Selecciona una mesa')}
+  if(!name){return alert('Ingresa tu nombre')}
+  if(!phone){return alert('Ingresa tu teléfono')}
+
+  const tableInfo = tables[currentZone].find(t=>t.id===selectedTable);
+  const zoneName = currentZone==='comedor'?'Comedor':'Playa';
+  
+  // Format date nicely
+  const d = new Date(date+'T12:00:00');
+  const dateStr = d.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'});
+
+  // Save to localStorage (replace with Supabase later)
+  const reservation = {id:Date.now(),name,phone,date,time,zone:currentZone,table:selectedTable,guests:guestCount,notes,createdAt:new Date().toISOString()};
+  const saved = JSON.parse(localStorage.getItem('reservations')||'[]');
+  saved.push(reservation);
+  localStorage.setItem('reservations',JSON.stringify(saved));
+
+  // Show confirmation
+  document.getElementById('confirmDetail').innerHTML = `
+    <div>📅 <strong>${dateStr}</strong> a las <strong>${time}</strong></div>
+    <div>📍 Zona <strong>${zoneName}</strong> — ${tableInfo.name}</div>
+    <div>👥 <strong>${guestCount}</strong> personas</div>
+    <div>👤 <strong>${name}</strong> · ${phone}</div>
+    ${notes ? `<div>📝 ${notes}</div>` : ''}
+  `;
+  document.getElementById('successModal').classList.add('show');
+}
+
+function closeModal(){
+  document.getElementById('successModal').classList.remove('show');
+  // Reset form
+  selectedTable = null;
+  document.getElementById('name').value='';
+  document.getElementById('phone').value='';
+  document.getElementById('notes').value='';
+  document.getElementById('time').value='';
+  guestCount = 2;
+  document.getElementById('guests').textContent = '2';
+  renderTables();
+}
+</script>
+</body>
+</html>
