@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asistente de Síntomas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020; --bg2:#11182f; --card:rgba(255,255,255,.08); --bd:rgba(255,255,255,.13);
+      --txt:#eaf1ff; --mut:#a7b5d6; --p:#5f8bff; --p2:#7ef0ff; --ok:#35d89a; --warn:#ffb84d;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,sans-serif;color:var(--txt);background:radial-gradient(circle at 0% 0%,#1a2a56 0,#0b1020 42%),linear-gradient(120deg,#0b1020,#141b33);min-height:100vh;overflow-x:hidden}
+    .bgfx{position:fixed;inset:0;pointer-events:none;opacity:.45;background:conic-gradient(from 180deg at 50% 50%,#5f8bff33,#7ef0ff22,#35d89a22,#5f8bff33);filter:blur(70px);animation:spin 16s linear infinite}
+    @keyframes spin{to{transform:rotate(1turn)}}
+    .wrap{max-width:980px;margin:0 auto;padding:22px}
+    .hero{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+    .logo{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--p),var(--p2));display:grid;place-items:center;font-weight:800;color:#0c1330}
+    h1{margin:0;font-size:1.45rem}
+    .sub{margin:4px 0 0;color:var(--mut);font-size:.94rem}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .card{background:var(--card);border:1px solid var(--bd);backdrop-filter:blur(12px);border-radius:18px;padding:16px;box-shadow:0 8px 30px #00000040}
+    label{display:block;font-size:.82rem;color:var(--mut);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    textarea,input,select{width:100%;border:1px solid var(--bd);background:#0c1430aa;color:var(--txt);border-radius:12px;padding:12px 13px;font:inherit}
+    textarea{min-height:120px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{padding:7px 10px;border-radius:999px;background:#172243;border:1px solid var(--bd);font-size:.82rem;color:#cfe1ff;cursor:pointer;transition:.2s}
+    .chip:hover{transform:translateY(-1px);border-color:#8eb0ff}
+    .btns{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+    button{border:0;padding:11px 14px;border-radius:12px;font-weight:700;cursor:pointer;transition:.2s}
+    .pri{background:linear-gradient(135deg,var(--p),#74b8ff);color:#08122f}
+    .sec{background:#1a274b;color:#d6e5ff;border:1px solid var(--bd)}
+    button:hover{transform:translateY(-1px)}
+    .warn{background:#ffdb9a;color:#4b2f00;padding:9px 11px;border-radius:10px;font-size:.84rem;margin-top:10px}
+    .list{display:grid;gap:10px;margin-top:8px}
+    .item{border:1px solid #2a3a69;background:#0f1938;border-radius:12px;padding:12px;animation:pop .25s ease}
+    .item h3{margin:0 0 4px;font-size:1rem}
+    .item p{margin:0;color:var(--mut);font-size:.9rem}
+    .tag{display:inline-block;margin-top:8px;padding:5px 8px;border-radius:999px;font-size:.75rem;font-weight:700}
+    .otc{background:#123d2c;color:#8bf3c3}.rx{background:#49340f;color:#ffd18a}.care{background:#1a2e5c;color:#b9ceff}
+    @keyframes pop{from{opacity:.2;transform:scale(.98)}to{opacity:1;transform:none}}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="bgfx"></div>
+<div class="wrap">
+  <div class="hero">
+    <div class="logo">💊</div>
+    <div>
+      <h1>Asistente Simple de Síntomas</h1>
+      <p class="sub">Sin login · rápido · sugerencias orientativas (no diagnóstico médico)</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <label>¿Qué síntomas tienes?</label>
+      <textarea id="symptoms" placeholder="Ej: dolor de cabeza, fiebre ligera, congestión nasal desde ayer..."></textarea>
+      <div class="chips">
+        <div class="chip" onclick="addSym('dolor de cabeza')">dolor de cabeza</div>
+        <div class="chip" onclick="addSym('fiebre')">fiebre</div>
+        <div class="chip" onclick="addSym('tos')">tos</div>
+        <div class="chip" onclick="addSym('gripe')">gripe</div>
+        <div class="chip" onclick="addSym('alergia')">alergia</div>
+        <div class="chip" onclick="addSym('dolor de estómago')">dolor de estómago</div>
+      </div>
+
+      <div class="row" style="margin-top:12px">
+        <div>
+          <label>Edad</label>
+          <input id="age" type="number" min="1" max="120" placeholder="Ej: 32">
+        </div>
+        <div>
+          <label>Alergias a medicamentos</label>
+          <input id="allergies" placeholder="Ej: penicilina (opcional)">
+        </div>
+      </div>
+
+      <div class="btns">
+        <button class="pri" onclick="analyze()">✨ Recomendar</button>
+        <button class="sec" onclick="clearAll()">Limpiar</button>
+      </div>
+      <div class="warn">⚠️ Esto es informativo. Si hay dolor intenso, dificultad para respirar, fiebre alta persistente o empeoras, ve a urgencias.</div>
+    </section>
+
+    <section class="card">
+      <label>Recomendaciones</label>
+      <div id="results" class="list">
+        <div class="item"><h3>Sin resultados aún</h3><p>Escribe tus síntomas y toca “Recomendar”.</p></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+const catalog = [
+  {k:['dolor de cabeza','migraña'], n:'Paracetamol', t:'otc', d:'Analgésico común para dolor leve/moderado y fiebre.'},
+  {k:['inflamación','dolor muscular','golpe'], n:'Ibuprofeno', t:'otc', d:'Antiinflamatorio para dolor muscular/articular.'},
+  {k:['fiebre'], n:'Paracetamol o Ibuprofeno', t:'otc', d:'Puede ayudar a bajar fiebre (según tolerancia).'},
+  {k:['tos seca'], n:'Dextrometorfano', t:'otc', d:'Ayuda a controlar tos seca.'},
+  {k:['tos con flema','congestión pecho'], n:'Ambroxol / Guaifenesina', t:'otc', d:'Mucolítico/expectorante para flema.'},
+  {k:['congestión nasal','nariz tapada'], n:'Solución salina + descongestionante', t:'otc', d:'Lavado nasal y apoyo temporal.'},
+  {k:['alergia','estornudos','picazón'], n:'Loratadina / Cetirizina', t:'otc', d:'Antihistamínico para alergias frecuentes.'},
+  {k:['acidez','reflujo'], n:'Antiácido (hidróxido Al/Mg)', t:'otc', d:'Alivio corto para acidez.'},
+  {k:['diarrea'], n:'Sales de rehidratación oral', t:'care', d:'Primero hidratación; vigilar signos de alarma.'},
+  {k:['dolor de estómago','gastritis'], n:'Butilhioscina / antiácido', t:'otc', d:'Puede aliviar cólico o irritación leve.'},
+  {k:['infección','amigdalitis','otitis'], n:'Antibiótico (solo con receta)', t:'rx', d:'No automedicar antibióticos sin valoración médica.'}
+];
+
+function addSym(s){
+  const el = document.getElementById('symptoms');
+  el.value = el.value ? (el.value + ', ' + s) : s;
+  el.focus();
+}
+
+function cardTag(type){
+  if(type==='otc') return '<span class="tag otc">OTC</span>';
+  if(type==='rx') return '<span class="tag rx">Receta</span>';
+  return '<span class="tag care">Cuidado</span>';
+}
+
+function analyze(){
+  const text = (document.getElementById('symptoms').value || '').toLowerCase();
+  const age = Number(document.getElementById('age').value || 0);
+  const allergies = (document.getElementById('allergies').value || '').toLowerCase();
+  const box = document.getElementById('results');
+
+  if(!text.trim()){
+    box.innerHTML = '<div class="item"><h3>Faltan síntomas</h3><p>Escribe al menos un síntoma para analizar.</p></div>';
+    return;
+  }
+
+  let found = [];
+  catalog.forEach(m=>{
+    if(m.k.some(x=>text.includes(x))) found.push(m);
+  });
+
+  // Heurística extra
+  if(text.includes('dolor') && !found.length) found.push({n:'Paracetamol',t:'otc',d:'Para dolor leve, según etiqueta.'});
+  if(text.includes('fiebre') && age>0 && age<12) found.push({n:'Control pediátrico',t:'care',d:'En niños, confirmar dosis con pediatra.'});
+  if(allergies.includes('ibuprofeno')) found = found.filter(f=>!f.n.toLowerCase().includes('ibuprofeno'));
+
+  // quitar duplicados
+  const seen=new Set();
+  found = found.filter(f=>{ if(seen.has(f.n)) return false; seen.add(f.n); return true; });
+
+  if(!found.length){
+    box.innerHTML = '<div class="item"><h3>No hay match claro</h3><p>Te recomiendo valoración médica para una orientación más precisa.</p><span class="tag care">Cuidado</span></div>';
+    return;
+  }
+
+  box.innerHTML = found.slice(0,6).map(f=>`
+    <div class="item">
+      <h3>${f.n}</h3>
+      <p>${f.d}</p>
+      ${cardTag(f.t)}
+    </div>
+  `).join('') +
+  '<div class="item"><h3>Nota importante</h3><p>Verifica dosis en el empaque y contraindicaciones. Si estás embarazada/o, tomas otros medicamentos o tienes enfermedad crónica, consulta profesional.</p><span class="tag care">Seguridad</span></div>';
+}
+
+function clearAll(){
+  document.getElementById('symptoms').value='';
+  document.getElementById('age').value='';
+  document.getElementById('allergies').value='';
+  document.getElementById('results').innerHTML='<div class="item"><h3>Sin resultados aún</h3><p>Escribe tus síntomas y toca “Recomendar”.</p></div>';
+}
+</script>
+</body>
+</html>
