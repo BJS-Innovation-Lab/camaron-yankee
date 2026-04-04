@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediFast · Asistente de Síntomas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0f1f;--bg2:#131c36;--card:#ffffff10;--line:#ffffff20;--text:#eaf1ff;--mut:#98a8cf;--p:#5f8bff;--c:#6ff7ff;--ok:#35d89a;--w:#ffb84d;--d:#ff6f6f}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,sans-serif;background:radial-gradient(circle at 10% 0,#1c2f66 0,#0a0f1f 45%),linear-gradient(130deg,#0a0f1f,#151f3c);color:var(--text);min-height:100vh;overflow-x:hidden}
+    .fx,.fx2{position:fixed;inset:-20%;pointer-events:none;filter:blur(70px);opacity:.35;animation:spin 20s linear infinite}.fx{background:conic-gradient(from 220deg,#5f8bff66,#6ff7ff22,#35d89a22,#5f8bff66)}.fx2{animation-direction:reverse;animation-duration:26s;background:conic-gradient(from 30deg,#ff8a8a22,#ffb84d22,#6ff7ff22,#ff8a8a22)}
+    @keyframes spin{to{transform:rotate(1turn)}}
+    .wrap{max-width:1050px;margin:auto;padding:20px}
+    .head{display:flex;gap:14px;align-items:center;margin:8px 0 16px}.logo{width:52px;height:52px;border-radius:14px;background:linear-gradient(140deg,var(--p),var(--c));display:grid;place-items:center;font-weight:800;color:#0b1430}
+    h1{margin:0;font-size:1.35rem}.sub{margin:4px 0 0;color:var(--mut);font-size:.92rem}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    .card{background:var(--card);border:1px solid var(--line);backdrop-filter:blur(12px);border-radius:18px;padding:16px;box-shadow:0 10px 30px #00000035}
+    label{display:block;font-size:.8rem;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+    textarea,input{width:100%;border:1px solid var(--line);background:#0e1734cc;color:var(--text);padding:12px;border-radius:12px;font:inherit}
+    textarea{min-height:120px;resize:vertical}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chip{padding:7px 10px;background:#172547;border:1px solid var(--line);border-radius:999px;font-size:.82rem;cursor:pointer;transition:.2s}.chip:hover{transform:translateY(-1px);border-color:#8baeff}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px} button{border:0;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;transition:.2s} button:hover{transform:translateY(-1px)}
+    .pri{background:linear-gradient(135deg,var(--p),#79bdff);color:#08132f}.sec{background:#1a274b;color:#d9e7ff;border:1px solid var(--line)}
+    .alert{margin-top:10px;background:#ffda9c;color:#4c2d00;padding:9px 11px;border-radius:10px;font-size:.82rem}
+    .meter{height:10px;background:#0f1938;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:10px 0 2px}.meter > div{height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--w),var(--d));transition:width .35s ease}
+    .mtext{font-size:.82rem;color:var(--mut)}
+    .list{display:grid;gap:10px;margin-top:10px}.item{border:1px solid #2b3b6a;background:#0f1939;border-radius:12px;padding:12px;animation:pop .25s ease}
+    @keyframes pop{from{opacity:.25;transform:translateY(3px)}to{opacity:1;transform:none}}
+    .item h3{margin:0 0 5px;font-size:1rem}.item p{margin:0;color:var(--mut);font-size:.9rem}
+    .tag{display:inline-block;margin-top:8px;border-radius:999px;padding:5px 8px;font-size:.75rem;font-weight:800}.otc{background:#123d2c;color:#93ffd0}.rx{background:#4d360f;color:#ffd89f}.care{background:#1a2f5f;color:#bdd2ff}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="fx"></div><div class="fx2"></div>
+<div class="wrap">
+  <div class="head"><div class="logo">💊</div><div><h1>MediFast · Síntomas a recomendación</h1><p class="sub">Proyecto nuevo · sin login · rápido · animado · no reemplaza consulta médica</p></div></div>
+  <div class="grid">
+    <section class="card">
+      <label>Síntomas</label>
+      <textarea id="sym" placeholder="Ej: fiebre 38, dolor de garganta, congestión nasal..."></textarea>
+      <div class="chips">
+        <div class="chip" onclick="add('dolor de cabeza')">dolor de cabeza</div><div class="chip" onclick="add('fiebre')">fiebre</div><div class="chip" onclick="add('tos seca')">tos seca</div><div class="chip" onclick="add('tos con flema')">tos con flema</div><div class="chip" onclick="add('alergia')">alergia</div><div class="chip" onclick="add('dolor de estómago')">dolor de estómago</div>
+      </div>
+      <div class="row">
+        <div><label>Edad</label><input id="age" type="number" min="1" max="120" placeholder="Ej: 30"></div>
+        <div><label>Alergias</label><input id="all" placeholder="Ej: ibuprofeno (opcional)"></div>
+      </div>
+      <div class="btns"><button class="pri" onclick="run()">⚡ Recomendar</button><button class="sec" onclick="resetAll()">Limpiar</button></div>
+      <div class="alert">⚠️ Si hay dolor fuerte, falta de aire, desmayo, vómito persistente o fiebre alta prolongada: urgencias.</div>
+    </section>
+    <section class="card">
+      <label>Nivel de atención sugerido</label>
+      <div class="meter"><div id="bar"></div></div>
+      <div id="mtext" class="mtext">Sin análisis</div>
+      <label style="margin-top:12px">Opciones sugeridas</label>
+      <div id="res" class="list"><div class="item"><h3>Esperando síntomas</h3><p>Escribe tus síntomas y pulsa “Recomendar”.</p></div></div>
+    </section>
+  </div>
+</div>
+<script>
+const meds=[
+{keys:['dolor de cabeza','migraña'],name:'Paracetamol',type:'otc',desc:'Analgésico para dolor leve/moderado y fiebre.'},
+{keys:['fiebre'],name:'Paracetamol o Ibuprofeno',type:'otc',desc:'Para control de fiebre, validando dosis.'},
+{keys:['dolor muscular','inflamación'],name:'Ibuprofeno',type:'otc',desc:'Antiinflamatorio para dolor muscular/articular.'},
+{keys:['tos seca'],name:'Dextrometorfano',type:'otc',desc:'Ayuda a reducir tos seca.'},
+{keys:['tos con flema','flema'],name:'Ambroxol / Guaifenesina',type:'otc',desc:'Mucolítico/expectorante.'},
+{keys:['congestión nasal','nariz tapada'],name:'Solución salina + descongestionante',type:'otc',desc:'Apoyo temporal para congestión.'},
+{keys:['alergia','estornudos','picazón'],name:'Loratadina / Cetirizina',type:'otc',desc:'Antihistamínico para alergia.'},
+{keys:['acidez','reflujo'],name:'Antiácido',type:'otc',desc:'Alivio corto de acidez.'},
+{keys:['diarrea'],name:'Sales de rehidratación oral',type:'care',desc:'Primero hidratación, vigilar señales de alarma.'},
+{keys:['infección','amigdalitis','otitis'],name:'Antibiótico (solo receta)',type:'rx',desc:'No automedicar antibióticos.'}
+];
+function add(s){const el=document.getElementById('sym');el.value=el.value?el.value+', '+s:s;el.focus();}
+function tag(t){return `<span class="tag ${t==='otc'?'otc':t==='rx'?'rx':'care'}">${t==='otc'?'OTC':t==='rx'?'Receta':'Cuidado'}</span>`}
+function urgency(text){let u=20;['falta de aire','desmayo','sangrado','dolor pecho'].forEach(k=>{if(text.includes(k))u=95}); if(text.includes('fiebre'))u+=20; if(text.includes('dolor fuerte'))u+=25; if(text.includes('niño')||text.includes('embarazo'))u+=10; return Math.min(100,u)}
+function run(){
+  const t=(document.getElementById('sym').value||'').toLowerCase();
+  const age=Number(document.getElementById('age').value||0);
+  const al=(document.getElementById('all').value||'').toLowerCase();
+  const res=document.getElementById('res');
+  if(!t.trim()){res.innerHTML='<div class="item"><h3>Falta información</h3><p>Escribe al menos un síntoma.</p></div>';return}
+  let out=[]; meds.forEach(m=>{if(m.keys.some(k=>t.includes(k))) out.push(m)});
+  if(t.includes('dolor') && !out.find(x=>x.name.includes('Paracetamol'))) out.push({name:'Paracetamol',type:'otc',desc:'Para dolor leve, según etiqueta.'});
+  if(age>0 && age<12) out.push({name:'Pediatría / dosis por peso',type:'care',desc:'En menores, validar dosis con pediatra.'});
+  if(al.includes('ibuprofeno')) out=out.filter(x=>!x.name.toLowerCase().includes('ibuprofeno'));
+  const seen=new Set(); out=out.filter(x=>seen.has(x.name)?false:(seen.add(x.name),true));
+  if(!out.length) out=[{name:'Consulta médica sugerida',type:'care',desc:'No hubo match suficiente para recomendación segura.'}];
+  const u=urgency(t); document.getElementById('bar').style.width=u+'%';
+  document.getElementById('mtext').textContent = u>=80?'Alto: busca atención médica pronto':u>=50?'Medio: monitoriza y consulta si empeora':'Bajo: manejo inicial en casa';
+  res.innerHTML=out.slice(0,6).map(x=>`<div class="item"><h3>${x.name}</h3><p>${x.desc}</p>${tag(x.type)}</div>`).join('') + '<div class="item"><h3>Nota de seguridad</h3><p>Verifica contraindicaciones y dosis en empaque. Si empeora, acude a consulta.</p>'+tag('care')+'</div>';
+}
+function resetAll(){['sym','age','all'].forEach(id=>document.getElementById(id).value='');document.getElementById('bar').style.width='0%';document.getElementById('mtext').textContent='Sin análisis';document.getElementById('res').innerHTML='<div class="item"><h3>Esperando síntomas</h3><p>Escribe tus síntomas y pulsa “Recomendar”.</p></div>'}
+</script>
+</body>
+</html>
