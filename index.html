@@ -74,7 +74,8 @@ input,textarea,select{font-family:inherit;outline:none;border:none;background:tr
 .calendar-header h2{font-size:1rem;font-weight:600}
 .calendar-nav{display:flex;gap:6px}
 .calendar-nav button{width:32px;height:32px;border-radius:50%;background:var(--bg-glass);color:var(--text);display:flex;align-items:center;justify-content:center;font-size:1rem;border:1px solid var(--border)}
-.week-grid{display:grid;grid-template-columns:60px repeat(7,1fr);border-top:1px solid var(--border)}
+.week-view{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.week-grid{display:grid;grid-template-columns:60px repeat(7,1fr);border-top:1px solid var(--border);min-width:760px}
 .week-header{display:contents}
 .week-header .day-label{padding:8px 4px;text-align:center;font-size:.65rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;border-bottom:1px solid var(--border)}
 .week-header .day-label.today{color:var(--accent)}
@@ -114,10 +115,22 @@ input,textarea,select{font-family:inherit;outline:none;border:none;background:tr
   .week-view{display:none}
   .day-view{display:block}
   .sidebar{display:none}
+  .hero-content{padding:0 14px 14px;gap:10px}
+  .hero-logo{width:56px;height:56px}
+  .hero-text h1{font-size:1.1rem}
+  .hero-text p{font-size:.72rem}
+  .calendar-header{padding:10px 12px}
+  .stats-bar{padding:0 12px 10px}
+  .restaurant-pills{padding:10px 12px}
+  .time-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .modal{padding:16px}
 }
 @media(min-width:768px){
   .day-view{display:none}
   .week-view{display:block}
+}
+@media(max-width:390px){
+  .time-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
 /* ===== SIDEBAR ===== */
@@ -192,8 +205,8 @@ input,textarea,select{font-family:inherit;outline:none;border:none;background:tr
 
 <!-- RESTAURANT PILLS -->
 <div class="restaurant-pills">
-  <button class="pill active" onclick="switchRestaurant('malibu')">🌴 Malibu Sun</button>
-  <button class="pill" onclick="switchRestaurant('jackie')">🦐 El Camarón Jackie</button>
+  <button class="pill active" onclick="switchRestaurant('malibu', this)">🌴 Malibu Sun</button>
+  <button class="pill" onclick="switchRestaurant('jackie', this)">🦐 El Camarón Jackie</button>
 </div>
 
 <!-- STATS -->
@@ -295,7 +308,22 @@ const timeSlots=['10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30'
 const dayNames=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const monthNames=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-let reservations=generateSampleData();
+let reservations=loadReservations();
+
+function loadReservations(){
+  try{
+    const raw=localStorage.getItem('cy_reservations_v6');
+    if(raw){
+      const parsed=JSON.parse(raw);
+      if(Array.isArray(parsed) && parsed.length) return parsed;
+    }
+  }catch(e){}
+  return generateSampleData();
+}
+
+function persistReservations(){
+  try{localStorage.setItem('cy_reservations_v6',JSON.stringify(reservations));}catch(e){}
+}
 
 function generateSampleData(){
   const today=new Date();
@@ -332,7 +360,7 @@ function getMonday(d){const day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);r
 function isSameDay(d1,d2){return formatDate(d1)===formatDate(d2)}
 
 // ===== SWITCH RESTAURANT =====
-function switchRestaurant(key){
+function switchRestaurant(key,el){
   currentRestaurant=key;
   const r=restaurants[key];
   document.body.className=r.theme||'';
@@ -341,7 +369,7 @@ function switchRestaurant(key){
   document.getElementById('heroTagline').textContent=r.tagline;
   document.getElementById('heroBg').style.backgroundImage="url('"+r.hero+"')";
   document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
-  event.target.classList.add('active');
+  if(el) el.classList.add('active');
   render();
 }
 
@@ -459,6 +487,7 @@ function saveReservation(p){
   if(!date){alert('Por favor selecciona fecha');return}
   if(!formState[p].time){alert('Por favor selecciona hora');return}
   reservations.push({id:Date.now(),name,phone,people:formState[p].people,zone:formState[p].zone,date,time:formState[p].time,notes,restaurant:currentRestaurant});
+  persistReservations();
   closeModal();render();formState[p]={people:2,zone:'beach',time:''};renderForms();
 }
 
@@ -483,7 +512,7 @@ function showDetail(id){
   document.getElementById('detailModal').classList.add('active');
 }
 
-function deleteRes(id){reservations=reservations.filter(r=>r.id!==id);closeModal();render()}
+function deleteRes(id){reservations=reservations.filter(r=>r.id!==id);persistReservations();closeModal();render()}
 
 // Close modals on overlay click
 document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)closeModal()})});
