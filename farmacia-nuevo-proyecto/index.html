@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SaludFlash · Recomendador Simple</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0b1022;--bg2:#101a35;--card:#ffffff0f;--line:#ffffff22;--txt:#ecf3ff;--mut:#9eb0d7;--pri:#6a8dff;--sec:#77f3ff;--ok:#3ddb9b;--warn:#ffbf5a;--danger:#ff7272}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,sans-serif;color:var(--txt);background:radial-gradient(circle at 0% 0%,#1a2d62 0,#0b1022 45%),linear-gradient(130deg,#0b1022,#151f3f);min-height:100vh;overflow-x:hidden}
+    .fx,.fx2{position:fixed;inset:-20%;pointer-events:none;filter:blur(75px);opacity:.35}
+    .fx{background:conic-gradient(from 0deg,#6a8dff55,#77f3ff22,#3ddb9b22,#6a8dff55);animation:spin 18s linear infinite}
+    .fx2{background:conic-gradient(from 190deg,#ff8b8b22,#ffbf5a22,#77f3ff22,#ff8b8b22);animation:spin 28s linear infinite reverse}
+    @keyframes spin{to{transform:rotate(1turn)}}
+    .wrap{max-width:1060px;margin:auto;padding:20px}
+    .head{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+    .logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(140deg,var(--pri),var(--sec));display:grid;place-items:center;font-weight:800;color:#0a1430}
+    h1{margin:0;font-size:1.42rem}.sub{margin:4px 0 0;color:var(--mut);font-size:.92rem}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    .card{background:var(--card);border:1px solid var(--line);backdrop-filter:blur(12px);border-radius:18px;padding:16px;box-shadow:0 10px 28px #00000035}
+    label{display:block;font-size:.8rem;color:var(--mut);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    textarea,input{width:100%;border:1px solid var(--line);background:#0e1734cc;color:var(--txt);padding:12px;border-radius:12px;font:inherit}
+    textarea{min-height:130px;resize:vertical}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{padding:7px 10px;border-radius:999px;background:#172447;border:1px solid var(--line);font-size:.82rem;cursor:pointer;transition:.2s}
+    .chip:hover{transform:translateY(-1px);border-color:#8fb0ff}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{border:0;border-radius:12px;padding:11px 14px;font-weight:800;cursor:pointer;transition:.2s}
+    .pri{background:linear-gradient(135deg,var(--pri),#7fc2ff);color:#08132f}.sec{background:#1a274b;color:#d8e7ff;border:1px solid var(--line)}
+    button:hover{transform:translateY(-1px)}
+    .alert{margin-top:10px;background:#ffe1ab;color:#4b2f00;border-radius:10px;padding:9px 11px;font-size:.83rem}
+    .meter{height:11px;background:#0f1938;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:8px 0 4px}
+    .meter>div{height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--warn),var(--danger));transition:width .35s ease}
+    .mtext{font-size:.83rem;color:var(--mut)}
+    .list{display:grid;gap:10px;margin-top:10px}
+    .item{border:1px solid #2b3b69;background:#0f193a;border-radius:12px;padding:12px;animation:pop .25s ease}
+    @keyframes pop{from{opacity:.2;transform:translateY(3px)}to{opacity:1;transform:none}}
+    .item h3{margin:0 0 5px;font-size:1rem}.item p{margin:0;color:var(--mut);font-size:.9rem}
+    .tag{display:inline-block;margin-top:8px;padding:5px 8px;border-radius:999px;font-size:.74rem;font-weight:800}
+    .otc{background:#133f2d;color:#95ffd1}.rx{background:#4d360f;color:#ffd89e}.care{background:#1a2e5f;color:#bed2ff}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="fx"></div><div class="fx2"></div>
+<div class="wrap">
+  <div class="head">
+    <div class="logo">💊</div>
+    <div>
+      <h1>SaludFlash · Síntomas → opción de medicamento</h1>
+      <p class="sub">Sin login · simple · interactivo · informativo (no reemplaza consulta médica)</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <label>Describe tus síntomas</label>
+      <textarea id="symptoms" placeholder="Ej: fiebre 38, dolor de garganta, congestión nasal desde ayer..."></textarea>
+      <div class="chips">
+        <div class="chip" onclick="addSym('dolor de cabeza')">dolor de cabeza</div>
+        <div class="chip" onclick="addSym('fiebre')">fiebre</div>
+        <div class="chip" onclick="addSym('tos seca')">tos seca</div>
+        <div class="chip" onclick="addSym('tos con flema')">tos con flema</div>
+        <div class="chip" onclick="addSym('alergia')">alergia</div>
+        <div class="chip" onclick="addSym('dolor de estómago')">dolor de estómago</div>
+      </div>
+      <div class="row">
+        <div><label>Edad</label><input id="age" type="number" min="1" max="120" placeholder="Ej: 29"></div>
+        <div><label>Alergias medicamentos</label><input id="allergies" placeholder="Ej: ibuprofeno"></div>
+      </div>
+      <div class="btns">
+        <button class="pri" onclick="analyze()">⚡ Recomendar</button>
+        <button class="sec" onclick="clearAll()">Limpiar</button>
+      </div>
+      <div class="alert">⚠️ Si hay falta de aire, dolor intenso, desmayo, fiebre alta persistente o empeoras: ve a urgencias.</div>
+    </section>
+
+    <section class="card">
+      <label>Nivel sugerido de atención</label>
+      <div class="meter"><div id="urgencyBar"></div></div>
+      <div id="urgencyText" class="mtext">Sin análisis</div>
+
+      <label style="margin-top:12px">Sugerencias</label>
+      <div id="results" class="list">
+        <div class="item"><h3>Sin resultados</h3><p>Escribe síntomas y toca “Recomendar”.</p></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+const db=[
+  {k:['dolor de cabeza','migraña'],n:'Paracetamol',t:'otc',d:'Analgésico común para dolor leve/moderado.'},
+  {k:['fiebre'],n:'Paracetamol o Ibuprofeno',t:'otc',d:'Puede ayudar a bajar fiebre según tolerancia.'},
+  {k:['dolor muscular','inflamación'],n:'Ibuprofeno',t:'otc',d:'Antiinflamatorio para dolor muscular/articular.'},
+  {k:['tos seca'],n:'Dextrometorfano',t:'otc',d:'Apoyo para controlar tos seca.'},
+  {k:['tos con flema','flema'],n:'Ambroxol / Guaifenesina',t:'otc',d:'Mucolítico/expectorante.'},
+  {k:['congestión nasal','nariz tapada'],n:'Lavado nasal + descongestionante',t:'otc',d:'Alivio temporal de congestión.'},
+  {k:['alergia','estornudos','picazón'],n:'Loratadina / Cetirizina',t:'otc',d:'Antihistamínico para alergia frecuente.'},
+  {k:['acidez','reflujo'],n:'Antiácido',t:'otc',d:'Alivio corto para acidez.'},
+  {k:['diarrea'],n:'Sales de rehidratación oral',t:'care',d:'Prioriza hidratación y observa señales de alarma.'},
+  {k:['infección','amigdalitis','otitis'],n:'Antibiótico (solo receta)',t:'rx',d:'No automedicar antibióticos sin valoración.'}
+];
+
+function addSym(s){
+  const el=document.getElementById('symptoms');
+  el.value=el.value?el.value+', '+s:s;
+}
+
+function urgency(text){
+  let u=20;
+  ['falta de aire','dolor pecho','desmayo','sangrado'].forEach(k=>{if(text.includes(k))u=95});
+  if(text.includes('fiebre'))u+=20;
+  if(text.includes('dolor fuerte'))u+=25;
+  if(text.includes('embarazo'))u+=10;
+  return Math.min(100,u);
+}
+
+function tag(t){
+  if(t==='otc') return '<span class="tag otc">OTC</span>';
+  if(t==='rx') return '<span class="tag rx">Receta</span>';
+  return '<span class="tag care">Cuidado</span>';
+}
+
+function analyze(){
+  const text=(document.getElementById('symptoms').value||'').toLowerCase();
+  const age=Number(document.getElementById('age').value||0);
+  const allergies=(document.getElementById('allergies').value||'').toLowerCase();
+  const box=document.getElementById('results');
+
+  if(!text.trim()){
+    box.innerHTML='<div class="item"><h3>Falta información</h3><p>Escribe al menos un síntoma.</p></div>';
+    return;
+  }
+
+  let out=[];
+  db.forEach(m=>{if(m.k.some(x=>text.includes(x))) out.push(m)});
+
+  if(text.includes('dolor') && !out.find(x=>x.n==='Paracetamol')) out.push({n:'Paracetamol',t:'otc',d:'Para dolor leve según etiqueta.'});
+  if(age>0 && age<12) out.push({n:'Control pediátrico',t:'care',d:'En menores validar dosis por peso.'});
+  if(allergies.includes('ibuprofeno')) out=out.filter(x=>!x.n.toLowerCase().includes('ibuprofeno'));
+
+  const seen=new Set();
+  out=out.filter(x=>seen.has(x.n)?false:(seen.add(x.n),true));
+  if(!out.length) out=[{n:'Consulta médica sugerida',t:'care',d:'No hubo match claro para una recomendación segura.'}];
+
+  const u=urgency(text);
+  document.getElementById('urgencyBar').style.width=u+'%';
+  document.getElementById('urgencyText').textContent = u>=80?'Alto: busca atención médica pronto':u>=50?'Medio: monitoriza y consulta si empeora':'Bajo: manejo inicial en casa';
+
+  box.innerHTML=out.slice(0,6).map(x=>`<div class="item"><h3>${x.n}</h3><p>${x.d}</p>${tag(x.t)}</div>`).join('')+
+  '<div class="item"><h3>Nota de seguridad</h3><p>Verifica dosis, contraindicaciones e interacciones. Si empeoras, consulta profesional.</p>'+tag('care')+'</div>';
+}
+
+function clearAll(){
+  document.getElementById('symptoms').value='';
+  document.getElementById('age').value='';
+  document.getElementById('allergies').value='';
+  document.getElementById('urgencyBar').style.width='0%';
+  document.getElementById('urgencyText').textContent='Sin análisis';
+  document.getElementById('results').innerHTML='<div class="item"><h3>Sin resultados</h3><p>Escribe síntomas y toca “Recomendar”.</p></div>';
+}
+</script>
+</body>
+</html>
