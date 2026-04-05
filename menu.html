@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario y Menú El Camarón Jackie</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top for the calendar */
+            min-height: 100vh;
+            background-color: #f0f2f5; /* Fondo suave, similar a dashboards */
+            overflow-x: hidden; /* Evitar scroll horizontal */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px; /* Ancho máximo para el contenido central */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        /* Estilo del Calendario (Placeholder) */
+        .calendar-section {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 800px; /* Ancho típico para un calendario centralizado */
+            margin-bottom: 40px;
+            box-sizing: border-box;
+        }
+        .calendar-section h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .day {
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .day:hover {
+            background-color: #d1d8df;
+            transform: translateY(-2px);
+        }
+        .day.selected {
+            background-color: #007bff; /* Color de selección */
+            color: #fff;
+        }
+        /* --- Componente del Menú --- */
+        .menu-trigger {
+            background-color: #e74c3c; /* Color distintivo del botón/ancla */
+            color: #ffffff;
+            padding: 18px 35px;
+            border-radius: 10px;
+            font-size: 1.6em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            position: relative; /* Para el icono si se agrega */
+            margin-top: 30px; /* Espacio debajo del calendario */
+            z-index: 10; /* Asegurar que esté sobre otros elementos si se superponen */
+        }
+        .menu-trigger:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+            background-color: #c0392b;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semi-transparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transform: translateX(100vw); /* Empieza fuera de la pantalla a la derecha */
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0); /* Se desliza hacia adentro */
+        }
+
+        .menu-content {
+            background-color: #ffffff; /* Fondo del menú */
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            max-width: 90vw; /* Ancho máximo del contenido del menú */
+            max-height: 90vh; /* Altura máxima del contenido del menú */
+            overflow: hidden; /* Ocultar scroll si no cabe todo */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+        }
+        .menu-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        .close-menu {
+            background: none;
+            border: none;
+            font-size: 2.5em;
+            color: #555;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close-menu:hover {
+            color: #e74c3c;
+        }
+
+        .menu-image-container {
+            flex-grow: 1; /* Permite que la imagen ocupe el espacio restante */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Para que la imagen no desborde */
+            padding: 20px;
+        }
+        .menu-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Ajustar imagen sin recortar */
+            border-radius: 8px; /* Bordes suaves para la imagen */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .calendar-section {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
+            .calendar-section h2 {
+                font-size: 1.8em;
+            }
+            .day {
+                padding: 12px;
+                font-size: 0.9em;
+            }
+            .menu-trigger {
+                padding: 15px 25px;
+                font-size: 1.4em;
+            }
+            .menu-header h3 {
+                font-size: 1.5em;
+            }
+            .close-menu {
+                font-size: 2em;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            .calendar-section {
+                padding: 15px;
+            }
+            .calendar-section h2 {
+                font-size: 1.5em;
+            }
+            .day {
+                padding: 10px;
+                font-size: 0.8em;
+            }
+            .menu-trigger {
+                padding: 12px 20px;
+                font-size: 1.2em;
+            }
+            .menu-header h3 {
+                font-size: 1.2em;
+            }
+            .close-menu {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sección del Calendario (Placeholder similar al de El Camarón Jackie) -->
+        <section class="calendar-section">
+            <h2>Reservas El Camarón Jackie</h2>
+            <p>Selecciona una fecha disponible:</p>
+            <div class="calendar-grid">
+                <div class="day">Lun 1</div>
+                <div class="day">Mar 2</div>
+                <div class="day selected">Mié 3</div>
+                <div class="day">Jue 4</div>
+                <div class="day">Vie 5</div>
+                <div class="day">Sáb 6</div>
+                <div class="day">Dom 7</div>
+                <!-- Más días aquí -->
+            </div>
+            <p style="margin-top: 25px; font-size: 1.1em; color: #555;">Horarios disponibles: 14:00, 16:00, 18:00</p>
+        </section>
+
+        <!-- Ancla Visual del Menú (Central y prominente) -->
+        <button class="menu-trigger" id="openMenu">
+            Ver Menú El Camarón Jackie
+        </button>
+
+        <!-- Overlay del Menú (Se desliza como un libro) -->
+        <div class="menu-overlay" id="menuOverlay">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <h3>Menú El Camarón Jackie</h3>
+                    <button class="close-menu" id="closeMenu">&times;</button>
+                </div>
+                <div class="menu-image-container">
+                    <img src="./menu_el_camaron_jackie_full.jpg" alt="Menú El Camarón Jackie" class="menu-image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('openMenu').addEventListener('click', function() {
+            document.getElementById('menuOverlay').classList.add('active');
+        });
+
+        document.getElementById('closeMenu').addEventListener('click', function() {
+            document.getElementById('menuOverlay').classList.remove('active');
+        });
+
+        // Opcional: Cerrar menú al hacer clic fuera del contenido
+        document.getElementById('menuOverlay').addEventListener('click', function(event) {
+            if (event.target === this) {
+                document.getElementById('menuOverlay').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
