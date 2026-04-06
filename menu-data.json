@@ -1,0 +1,81 @@
+{
+  "restaurant": {
+    "name": "El Camarón Jackie",
+    "slogan": "Calidad y Sabor Solo Aquí",
+    "guarantee": "Garantía 100% Jackie",
+    "currency": "MXN"
+  },
+  "categories": [
+    {
+      "name": "Entradas",
+      "items": [
+        {"name": "Tostadas de camarón", "price": 350},
+        {"name": "Tostadas de pulpo", "price": 420},
+        {"name": "Tostadas de ceviche", "price": 295},
+        {"name": "Tostadas mixtas", "price": 370},
+        {"name": "Empanadas de camarón", "price": 260},
+        {"name": "Empanadas de pescado", "price": 190},
+        {"name": "Empanadas de pulpo", "price": 240},
+        {"name": "Pescadillas", "price": 95},
+        {"name": "Camarones aguachile", "price": 330},
+        {"name": "Camaronillas", "price": 145},
+        {"name": "Consomé de camarón", "price": 75},
+        {"name": "Consomé de mariscos", "price": 175},
+        {"name": "Huerfanito", "price": 95},
+        {"name": "Sopes", "price": 95},
+        {"name": "Guacamole con totopos", "price": 130},
+        {"name": "Tiritas de pescado en aguachile", "price": 260},
+        {"name": "Tacos de camarón", "price": 285},
+        {"name": "Tacos de mariscos", "description": "camarón, pulpo, ceviche", "price": 285},
+        {"name": "Caracol a la mexicana", "price": 195},
+        {"name": "Camarones brava", "price": 340, "featured": true}
+      ]
+    },
+    {
+      "name": "Mariscos",
+      "items": [
+        {"name": "Coctel del jefe", "description": "con callo de hacha", "price": 420, "featured": true},
+        {"name": "Callo de hacha", "description": "aguachile, estilo el jefe", "price": 580},
+        {"name": "Camarones al mojo de ajo", "price": 325},
+        {"name": "Camarones a la diabla", "price": 325},
+        {"name": "Camarones empanizados", "price": 325},
+        {"name": "Camarones al ajillo", "price": 325},
+        {"name": "Arroz con mariscos", "description": "camarón, pulpo, surimi", "price": 350},
+        {"name": "Pulpo", "description": "ajo, ajillo, diabla, enamorado o cóctel", "price": 420},
+        {"name": "Campechana", "description": "pulpo y camarón", "price": 330},
+        {"name": "Vuelve a la vida", "description": "camarón, pulpo, caracol, surimi", "price": 295},
+        {"name": "Coctel de camarón grande", "price": 340},
+        {"name": "Coctel de camarón chico", "price": 230},
+        {"name": "Ceviche de pescado chico", "price": 195},
+        {"name": "Ceviche de pescado grande", "price": 260},
+        {"name": "Aguacate relleno de camarón", "price": 220},
+        {"name": "Aguacate relleno atún", "price": 185}
+      ]
+    },
+    {
+      "name": "Pescado",
+      "items": [
+        {"name": "Huachinango a la talla (1kg)", "price": 640},
+        {"name": "Huachinango a la talla (700g)", "price": 460},
+        {"name": "Mojarra a la talla (1kg)", "price": 435},
+        {"name": "Mojarra a la talla (700g)", "price": 325},
+        {"name": "Filete de cazón (ajo, diabla o empanizado)", "price": 195}
+      ]
+    },
+    {
+      "name": "Especialidades",
+      "items": [
+        {"name": "Molcajete mar y tierra (2 pers)", "price": 650},
+        {"name": "Molcajete de mariscos (2 pers)", "price": 560},
+        {"name": "Espagueti a la marinera", "price": 320},
+        {"name": "Filete con camarones al queso", "price": 320},
+        {"name": "Filete relleno de camarón", "price": 350},
+        {"name": "Filete supremo", "price": 375},
+        {"name": "Langosta 1kg", "price": 980},
+        {"name": "Piña rellena de mariscos (1 pers)", "price": 395},
+        {"name": "Camarones Jackie", "price": 330, "featured": true},
+        {"name": "Tacos gobernador (Langosta, Pescado o Camarón)", "price": 390, "featured": true}
+      ]
+    }
+  ]
+}
