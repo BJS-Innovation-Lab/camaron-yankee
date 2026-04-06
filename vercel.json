@@ -1,5 +1,9 @@
 {
   "buildCommand": "",
   "outputDirectory": ".",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/(.*)\\.(jpg|png|gif|css|js|json)", "destination": "/$1.$2" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
