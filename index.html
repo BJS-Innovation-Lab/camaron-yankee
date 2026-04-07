@@ -75,7 +75,7 @@ section{padding:1.15rem 0.9rem}
 .tables-grid{max-width:440px;margin:0 auto}
 .tables-grid.standard-grid{display:grid;grid-template-columns:repeat(6,minmax(42px,1fr));gap:0.5rem}
 .tables-grid.playa-grid{display:grid;grid-template-columns:repeat(12,minmax(20px,1fr));grid-template-rows:repeat(8,42px);gap:0.2rem;background:#f7fcff;border:1px dashed #9ed9ff;border-radius:14px;padding:0.45rem;min-height:365px}
-.tables-grid.floorplan-grid{display:grid;grid-template-columns:repeat(16,minmax(16px,1fr));grid-template-rows:repeat(22,20px);gap:0.36rem;background:#f7fcff;border:1px dashed #9ed9ff;border-radius:14px;padding:0.7rem;min-height:560px}
+.tables-grid.floorplan-grid{display:grid;grid-template-columns:repeat(16,minmax(16px,1fr));grid-template-rows:repeat(24,20px);gap:0.34rem;background:#f7fcff;border:1px dashed #9ed9ff;border-radius:14px;padding:0.7rem;min-height:620px}
 
 .table-btn{position:relative;border-radius:9px;border:1.5px solid #85c8ef;background:#ffffff;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;transition:all 0.2s;font-size:0.62rem;color:#0f3d5a;padding:0.12rem 0.08rem 0.14rem;-webkit-tap-highlight-color:transparent;overflow:visible}
 .table-btn:active{transform:scale(0.93)}
@@ -152,7 +152,7 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.6;color:#2a628
   .hero h1{font-size:2rem}
   .tables-grid.standard-grid{gap:0.35rem;max-width:340px}
   .tables-grid.playa-grid{grid-template-columns:repeat(12,minmax(18px,1fr));grid-template-rows:repeat(8,34px);gap:0.15rem;min-height:300px;padding:0.35rem}
-  .tables-grid.floorplan-grid{grid-template-columns:repeat(16,minmax(12px,1fr));grid-template-rows:repeat(22,17px);gap:0.18rem;min-height:420px;padding:0.45rem}
+  .tables-grid.floorplan-grid{grid-template-columns:repeat(16,minmax(12px,1fr));grid-template-rows:repeat(24,16px);gap:0.16rem;min-height:460px;padding:0.45rem}
   .table-btn{font-size:0.54rem}
   .table-btn .seats{font-size:0.42rem}
   .form-row{flex-direction:column;gap:0.5rem}
@@ -228,7 +228,13 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.6;color:#2a628
         <input type="tel" id="phone" placeholder="744 123 4567" autocomplete="tel" required>
       </div>
     </div>
-    <p style="font-size:0.8rem;color:#2d6487;opacity:0.85;margin-top:0.4rem">Solo pedimos tu nombre y tu número de WhatsApp. Te contactamos para cerrar detalles.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Fecha de reservación</label>
+        <input type="date" id="date" required>
+      </div>
+    </div>
+    <p style="font-size:0.8rem;color:#2d6487;opacity:0.85;margin-top:0.4rem">Solo pedimos tu nombre, WhatsApp y fecha deseada. Te contactamos para confirmar horario.</p>
     <button class="submit-btn" id="submit-btn" onclick="submitReservation()">Agendar por WhatsApp</button>
   </div>
 </section>
@@ -370,21 +376,24 @@ function renderTables() {
 
   if (currentArea === 'comedor') {
     grid.className = 'tables-grid floorplan-grid';
-    hint.textContent = 'Mapa interior tipo croquis (distribución más fiel al plano físico)';
+    const compactComedor = window.innerWidth <= 430;
+    hint.textContent = compactComedor
+      ? 'Mapa interior optimizado para celular (sin encimar mesas)'
+      : 'Mapa interior tipo croquis (distribución más fiel al plano físico)';
 
     const labels = `
-      <div class="floor-label access" style="grid-column:7 / span 6; grid-row:1 / span 1;">Acceso Playa</div>
-      <div class="floor-label bath" style="grid-column:14 / span 3; grid-row:14 / span 1;">Baño</div>
-      <div class="floor-label entrance" style="grid-column:1 / span 2; grid-row:16 / span 5;">Entrada</div>
-      <div class="zone-block bar" style="grid-column:10 / span 7; grid-row:17 / span 2;">Barra</div>
-      <div class="zone-block kitchen" style="grid-column:10 / span 7; grid-row:19 / span 3;">Cocina</div>
+      <div class="floor-label access" style="grid-column:6 / span 7; grid-row:1 / span 1;">Acceso Playa</div>
+      <div class="floor-label bath" style="grid-column:14 / span 3; grid-row:10 / span 1;">Baño</div>
+      <div class="floor-label entrance" style="grid-column:1 / span 2; grid-row:17 / span 5;">Entrada</div>
+      <div class="zone-block bar" style="grid-column:10 / span 7; grid-row:18 / span 2;">Barra</div>
+      <div class="zone-block kitchen" style="grid-column:10 / span 7; grid-row:20 / span 3;">Cocina</div>
     `;
 
     const tableHtml = tables.comedor.map(t => {
       const isUnavail = unavailable.includes(t.id);
       const isSel = selectedTable === t.id;
       const style = `grid-row:${t.row} / span ${t.rowSpan};grid-column:${t.col} / span ${t.colSpan};height:100%;min-height:0;`;
-      return renderTableButton(t, isSel, isUnavail, style);
+      return renderTableButton(t, isSel, isUnavail, style, compactComedor);
     }).join('');
 
     grid.innerHTML = labels + tableHtml;
@@ -426,9 +435,11 @@ async function submitReservation() {
   const btn = document.getElementById('submit-btn');
   const name = document.getElementById('name').value.trim();
   const phone = document.getElementById('phone').value.trim();
+  const date = document.getElementById('date').value;
 
   if (!name) { showToast('Ingresa tu nombre'); return; }
   if (!phone) { showToast('Ingresa tu número de WhatsApp'); return; }
+  if (!date) { showToast('Selecciona la fecha de reservación'); return; }
 
   btn.disabled = true;
   btn.textContent = 'Agendando por WhatsApp...';
@@ -438,12 +449,12 @@ async function submitReservation() {
     name,
     phone,
     whatsapp: phone,
-    date: now.toISOString().split('T')[0],
-    time: now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    date,
+    time: 'Por confirmar por WhatsApp',
     guests: 2,
     area: currentArea,
     table_id: selectedTable,
-    notes: 'Registro express por WhatsApp (solo nombre + número)',
+    notes: 'Registro express por WhatsApp (nombre + número + fecha)',
     status: 'pending_whatsapp_confirmation',
     created_at: now.toISOString()
   };
@@ -481,6 +492,7 @@ function showConfirmation(r) {
   document.getElementById('confirm-detail').innerHTML = `
     <strong>Nombre:</strong> ${r.name}<br>
     <strong>WhatsApp:</strong> ${r.phone}<br>
+    <strong>Fecha solicitada:</strong> ${r.date}<br>
     <strong>Zona:</strong> ${r.area === 'comedor' ? '🏠 Comedor' : '🏖️ Playa'}<br>
     ${r.table_id ? `<strong>Mesa:</strong> ${r.table_id}<br>` : ''}
     <em>Te escribimos por WhatsApp para confirmar horario.</em>
@@ -495,12 +507,16 @@ function resetForm() {
   document.getElementById('confirmation').style.display = 'none';
   document.getElementById('name').value = '';
   document.getElementById('phone').value = '';
+  document.getElementById('date').value = new Date().toISOString().split('T')[0];
   selectedTable = null;
   renderTables();
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 // ========== INIT ==========
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('date').min = today;
+document.getElementById('date').value = today;
 renderTables();
 </script>
 </body>
