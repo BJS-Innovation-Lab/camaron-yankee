@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Camarón Yankee — Reservaciones</title>
+<title>Camarón Jackie — Reservaciones</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -11,10 +11,10 @@
 :root{--gold:#d4a853;--dark:#12324a;--ocean:#0a3d62;--sand:#f5e6c8;--coral:#e8735a;--white:#fff;--gray:#f8f6f3;--teal:#40B5AD;--blueSoft:#e6f4ff}
 body{font-family:'Inter',sans-serif;background:linear-gradient(180deg,#ffffff 0%,#eef8ff 45%,#dff1ff 100%);color:#12324a;min-height:100vh;overflow-x:hidden}
 
-/* MENU TRIGGER */
-.menu-trigger{position:fixed;top:50%;right:0;transform:translateY(-50%);z-index:60;background:var(--gold);color:var(--dark);padding:1rem 0.6rem;border-radius:10px 0 0 10px;cursor:pointer;writing-mode:vertical-rl;font-size:0.75rem;font-weight:700;letter-spacing:1px;box-shadow:0 4px 15px rgba(0,0,0,0.3);transition:all 0.3s;display:flex;align-items:center;gap:0.5rem;-webkit-tap-highlight-color:transparent}
-.menu-trigger:hover{padding-right:1rem;background:var(--white)}
-.menu-trigger:active{transform:translateY(-50%) scale(0.95)}
+/* MENU TRIGGER (mobile-first) */
+.menu-trigger{position:fixed;bottom:0.9rem;right:0.9rem;z-index:60;background:var(--gold);color:var(--dark);padding:0.78rem 1rem;border-radius:999px;cursor:pointer;font-size:0.78rem;font-weight:700;letter-spacing:0.7px;box-shadow:0 6px 18px rgba(0,0,0,0.25);transition:all 0.25s;display:flex;align-items:center;gap:0.35rem;-webkit-tap-highlight-color:transparent}
+.menu-trigger:hover{background:var(--white)}
+.menu-trigger:active{transform:scale(0.95)}
 
 /* MENU OVERLAY */
 .menu-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s}
@@ -38,7 +38,7 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(180deg,#ffffff 0%
 .menu-scroll img.active{display:block}
 
 /* HERO */
-.hero{position:relative;min-height:55vh;display:flex;align-items:flex-end;padding:2rem 1.5rem;
+.hero{position:relative;min-height:48vh;display:flex;align-items:flex-end;padding:1.5rem 1rem;
 background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.7) 60%,rgba(26,26,26,1) 100%),
 url('https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80') center/cover}
 .hero-content{max-width:500px}
@@ -48,7 +48,7 @@ url('https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80') c
 .hero .location{font-size:0.85rem;opacity:0.6;display:flex;align-items:center;gap:0.3rem}
 
 /* SECTIONS */
-section{padding:2rem 1.5rem}
+section{padding:1.15rem 0.9rem}
 .section-title{font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:1.5rem;text-align:center}
 .section-title span{color:var(--gold)}
 
@@ -74,9 +74,10 @@ section{padding:2rem 1.5rem}
 
 .tables-grid{max-width:440px;margin:0 auto}
 .tables-grid.standard-grid{display:grid;grid-template-columns:repeat(6,minmax(42px,1fr));gap:0.5rem}
+.tables-grid.playa-grid{display:grid;grid-template-columns:repeat(12,minmax(20px,1fr));grid-template-rows:repeat(8,42px);gap:0.2rem;background:#f7fcff;border:1px dashed #9ed9ff;border-radius:14px;padding:0.45rem;min-height:365px}
 .tables-grid.floorplan-grid{display:grid;grid-template-columns:repeat(16,minmax(16px,1fr));grid-template-rows:repeat(22,20px);gap:0.36rem;background:#f7fcff;border:1px dashed #9ed9ff;border-radius:14px;padding:0.7rem;min-height:560px}
 
-.table-btn{position:relative;border-radius:11px;border:1.5px solid #85c8ef;background:#ffffff;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;transition:all 0.2s;font-size:0.66rem;color:#0f3d5a;padding:0.15rem 0.1rem 0.18rem;-webkit-tap-highlight-color:transparent;overflow:visible}
+.table-btn{position:relative;border-radius:9px;border:1.5px solid #85c8ef;background:#ffffff;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;transition:all 0.2s;font-size:0.62rem;color:#0f3d5a;padding:0.12rem 0.08rem 0.14rem;-webkit-tap-highlight-color:transparent;overflow:visible}
 .table-btn:active{transform:scale(0.93)}
 .table-btn.selected{border-color:#d4a853;background:#fff7e8;color:#8a6321;box-shadow:0 0 0 1px rgba(212,168,83,0.55) inset}
 .table-btn.unavailable{opacity:0.55;cursor:not-allowed;pointer-events:none;background:#edf3f8;border-color:#a8c0d3}
@@ -93,6 +94,9 @@ section{padding:2rem 1.5rem}
 .tables-grid.floorplan-grid .table-btn{padding:0.08rem 0.06rem 0.12rem;font-size:0.56rem}
 .tables-grid.floorplan-grid .table-id{font-size:0.54rem}
 .tables-grid.floorplan-grid .table-btn .seats{font-size:0.46rem}
+.table-btn.compact{padding:0.08rem 0.04rem 0.1rem;border-radius:6px}
+.table-btn.compact .table-id{font-size:0.5rem;letter-spacing:0.15px}
+.table-btn.compact .table-surface{width:74%;height:68%;border-radius:3px}
 
 .seat-layer{position:absolute;inset:-6px;pointer-events:none}
 .seat-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.88);transform:translate(-50%,-50%)}
@@ -137,14 +141,19 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.6;color:#2a628
 
 @media(min-width:600px){
   .hero h1{font-size:3.5rem}
-  section{padding:2.5rem;max-width:600px;margin:0 auto}
+  .hero{min-height:55vh;padding:2rem 1.5rem}
+  section{padding:2.2rem 1.4rem;max-width:640px;margin:0 auto}
+  .menu-trigger{top:50%;right:0;bottom:auto;transform:translateY(-50%);writing-mode:vertical-rl;border-radius:10px 0 0 10px;padding:1rem 0.6rem}
+  .menu-trigger:hover{padding-right:1rem}
+  .menu-trigger:active{transform:translateY(-50%) scale(0.95)}
 }
 @media(max-width:380px){
   .hero h1{font-size:2rem}
   .tables-grid.standard-grid{gap:0.35rem;max-width:340px}
+  .tables-grid.playa-grid{grid-template-columns:repeat(12,minmax(18px,1fr));grid-template-rows:repeat(8,34px);gap:0.15rem;min-height:300px;padding:0.35rem}
   .tables-grid.floorplan-grid{grid-template-columns:repeat(16,minmax(12px,1fr));grid-template-rows:repeat(22,17px);gap:0.18rem;min-height:420px;padding:0.45rem}
-  .table-btn{font-size:0.56rem}
-  .table-btn .seats{font-size:0.44rem}
+  .table-btn{font-size:0.54rem}
+  .table-btn .seats{font-size:0.42rem}
   .form-row{flex-direction:column;gap:0.5rem}
 }
 </style>
@@ -153,7 +162,7 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.6;color:#2a628
 
 <div class="hero">
   <div class="hero-content">
-    <h1>Camarón <span>Yankee</span></h1>
+    <h1>Camarón <span>Jackie</span></h1>
     <p>Mariscos frescos frente al mar</p>
     <div class="location">📍 Acapulco, Guerrero</div>
   </div>
@@ -193,7 +202,7 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.6;color:#2a628
   </div>
   <div class="table-map">
     <div class="table-map-title">Selecciona tu mesa (opcional)</div>
-    <div class="table-map-hint">Mapa por filas: 2 • 5 • 4 • 5 • 3 • 2 mesas</div>
+    <div class="table-map-hint">Croquis de playa (T y P) según plano físico</div>
     <div class="tables-grid standard-grid" id="tables-grid"></div>
     <div class="map-legend">
       <span><i class="map-dot available"></i>Disponible</span>
@@ -214,53 +223,12 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.6;color:#2a628
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Teléfono</label>
-        <input type="tel" id="phone" placeholder="744 123 4567" autocomplete="tel">
+        <label>WhatsApp</label>
+        <input type="tel" id="phone" placeholder="744 123 4567" autocomplete="tel" required>
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Fecha</label>
-        <input type="date" id="date">
-      </div>
-      <div class="form-group">
-        <label>Hora</label>
-        <select id="time">
-          <option value="">Selecciona</option>
-          <option>12:00 PM</option><option>12:30 PM</option>
-          <option>1:00 PM</option><option>1:30 PM</option>
-          <option>2:00 PM</option><option>2:30 PM</option>
-          <option>3:00 PM</option><option>3:30 PM</option>
-          <option>4:00 PM</option><option>5:00 PM</option>
-          <option>6:00 PM</option><option>6:30 PM</option>
-          <option>7:00 PM</option><option>7:30 PM</option>
-          <option>8:00 PM</option><option>8:30 PM</option>
-          <option>9:00 PM</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Personas</label>
-        <select id="guests">
-          <option value="1">1 persona</option>
-          <option value="2" selected>2 personas</option>
-          <option value="3">3 personas</option>
-          <option value="4">4 personas</option>
-          <option value="5">5 personas</option>
-          <option value="6">6 personas</option>
-          <option value="7">7 personas</option>
-          <option value="8">8+ personas</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Notas especiales</label>
-        <input type="text" id="notes" placeholder="Cumpleaños, alergias, etc.">
-      </div>
-    </div>
-    <button class="submit-btn" id="submit-btn" onclick="submitReservation()">Reservar Mesa 🦐</button>
+    <p style="font-size:0.8rem;color:#2d6487;opacity:0.85;margin-top:0.4rem">Solo pedimos tu nombre y tu número de WhatsApp. Te contactamos para cerrar detalles.</p>
+    <button class="submit-btn" id="submit-btn" onclick="submitReservation()">Agendar por WhatsApp 🟢</button>
   </div>
 </section>
 </div>
@@ -268,17 +236,17 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.6;color:#2a628
 <div class="confirmation" id="confirmation">
   <div class="check">✅</div>
   <h2>¡Reservación confirmada!</h2>
-  <p>Te esperamos en Camarón Yankee</p>
+  <p>Te esperamos en Camarón Jackie</p>
   <div class="detail" id="confirm-detail"></div>
   <button class="btn-back" onclick="resetForm()">Hacer otra reservación</button>
 </div>
 
-<footer>Camarón Yankee · Acapulco, Guerrero</footer>
+<footer>Camarón Jackie · Acapulco, Guerrero</footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ========== SUPABASE (NUEVA - exclusiva Camarón Yankee) ==========
+// ========== SUPABASE (NUEVA - exclusiva Camarón Jackie) ==========
 const SUPABASE_URL = 'https://wnnwupuivfaialfebind.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indubnd1cHVpdmZhaWFsZmViaW5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MTU0ODYsImV4cCI6MjA5MTA5MTQ4Nn0.z_zfDkRZUAblmNibMYx5AX_bmD69fETtBUSo_9FSJZo';
 const DB_READY = true;
@@ -317,7 +285,6 @@ function switchMenu(index, el) {
 }
 
 // ========== TABLES ==========
-const layoutRows = [2, 5, 4, 5, 3, 2];
 const seatPattern = [2,2,4,4,4,6,6,8,2,4,4,6,6,8,2,4,6,8,4,2,2];
 
 const comedorFloorplan = [
@@ -344,28 +311,42 @@ const comedorFloorplan = [
   { id:'C21', row:7, col:10, rowSpan:2, colSpan:2, shape:'round' }
 ].map((t, idx) => ({ ...t, seats: seatPattern[idx] ?? 4 }));
 
-function buildTables(prefix) {
-  return seatPattern.map((seats, idx) => ({ id: `${prefix}${idx + 1}`, seats }));
-}
+const playaTopPalapas = [
+  ['P8', 'P9', 'P10', 'P11', null, null, 'P12', 'P13', 'P14', null, null, null],
+  ['P1', 'P2', 'P3', 'P4', null, null, 'P5', 'P6', 'P7', null, null, null]
+];
+
+const playaMesasRows = [
+  Array.from({ length: 12 }, (_, i) => `T${i + 25}`),
+  Array.from({ length: 12 }, (_, i) => `T${i + 13}`),
+  Array.from({ length: 12 }, (_, i) => `T${i + 1}`)
+];
+
+const playaFloorplan = [];
+playaTopPalapas.forEach((row, rIdx) => {
+  row.forEach((id, cIdx) => {
+    if (!id) return;
+    playaFloorplan.push({ id, row: rIdx + 2, col: cIdx + 1, rowSpan: 1, colSpan: 1, shape: 'square', seats: 4 });
+  });
+});
+
+playaMesasRows.forEach((row, rIdx) => {
+  row.forEach((id, cIdx) => {
+    playaFloorplan.push({ id, row: rIdx + 5, col: cIdx + 1, rowSpan: 1, colSpan: 1, shape: 'square', seats: 2 });
+  });
+});
 
 const tables = {
   comedor: comedorFloorplan,
-  playa: buildTables('P')
+  playa: playaFloorplan
 };
 
-function getRowStart(count) {
-  if (count === 2) return 3;
-  if (count === 3) return 2;
-  if (count === 4) return 2;
-  return 1;
-}
-
-function renderTableButton(t, isSel, isUnavail, extraStyle = '') {
+function renderTableButton(t, isSel, isUnavail, extraStyle = '', compact = false) {
   const shape = t.shape || 'square';
-  return `<div class="table-btn shape-${shape} ${isSel?'selected':''} ${isUnavail?'unavailable':''}" style="${extraStyle}" onclick="selectTable('${t.id}')">
+  return `<div class="table-btn shape-${shape} ${compact ? 'compact' : ''} ${isSel?'selected':''} ${isUnavail?'unavailable':''}" style="${extraStyle}" onclick="selectTable('${t.id}')">
     <span class="table-surface"></span>
     <span class="table-id">${t.id}</span>
-    <span class="seats">${t.seats} pers</span>
+    ${compact ? '' : `<span class="seats">${t.seats} pers</span>`}
   </div>`;
 }
 
@@ -382,7 +363,7 @@ function renderTables() {
   const hint = document.querySelector('.table-map-hint');
   const unavailableByArea = {
     comedor: ['C3', 'C14', 'C20'],
-    playa: ['P2', 'P9', 'P17']
+    playa: ['P2', 'P9', 'T17']
   };
   const unavailable = unavailableByArea[currentArea] || [];
 
@@ -409,25 +390,21 @@ function renderTables() {
     return;
   }
 
-  grid.className = 'tables-grid standard-grid';
-  hint.textContent = 'Mapa por filas: 2 • 5 • 4 • 5 • 3 • 2 mesas';
+  grid.className = 'tables-grid playa-grid';
+  hint.textContent = 'Croquis playa: P = palapa · T = mesa tipo playa';
+
+  const marLabel = `<div class="floor-label access" style="grid-column:1 / span 12; grid-row:1 / span 1;">MAR</div>`;
+  const playaLabel = `<div class="floor-label" style="grid-column:1 / span 12; grid-row:8 / span 1;">ÁREA PLAYA</div>`;
+
   const areaTables = tables.playa;
-  let idx = 0;
-  const html = [];
+  const tableHtml = areaTables.map(t => {
+    const isUnavail = unavailable.includes(t.id);
+    const isSel = selectedTable === t.id;
+    const style = `grid-row:${t.row} / span ${t.rowSpan};grid-column:${t.col} / span ${t.colSpan};min-height:0;height:100%;`;
+    return renderTableButton(t, isSel, isUnavail, style, true);
+  }).join('');
 
-  layoutRows.forEach((count, rowIdx) => {
-    const startCol = getRowStart(count);
-    for (let c = 0; c < count; c++) {
-      const t = areaTables[idx++];
-      if (!t) break;
-      const isUnavail = unavailable.includes(t.id);
-      const isSel = selectedTable === t.id;
-      const style = `grid-row:${rowIdx + 1};grid-column:${startCol + c};min-height:56px;`;
-      html.push(renderTableButton({ ...t, shape: (count <= 3 ? 'square' : (c % 2 ? 'rect-v' : 'rect-h')) }, isSel, isUnavail, style));
-    }
-  });
-
-  grid.innerHTML = html.join('');
+  grid.innerHTML = marLabel + tableHtml + playaLabel;
 }
 
 function selectTable(id) {
@@ -448,22 +425,26 @@ async function submitReservation() {
   const btn = document.getElementById('submit-btn');
   const name = document.getElementById('name').value.trim();
   const phone = document.getElementById('phone').value.trim();
-  const date = document.getElementById('date').value;
-  const time = document.getElementById('time').value;
-  const guests = document.getElementById('guests').value;
-  const notes = document.getElementById('notes').value.trim();
 
   if (!name) { showToast('Ingresa tu nombre'); return; }
-  if (!date) { showToast('Selecciona una fecha'); return; }
-  if (!time) { showToast('Selecciona una hora'); return; }
+  if (!phone) { showToast('Ingresa tu número de WhatsApp'); return; }
 
   btn.disabled = true;
-  btn.textContent = 'Reservando...';
+  btn.textContent = 'Agendando...';
 
+  const now = new Date();
   const reservation = {
-    name, phone, date, time, guests: parseInt(guests),
-    area: currentArea, table_id: selectedTable, notes,
-    status: 'confirmed', created_at: new Date().toISOString()
+    name,
+    phone,
+    whatsapp: phone,
+    date: now.toISOString().split('T')[0],
+    time: now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    guests: 2,
+    area: currentArea,
+    table_id: selectedTable,
+    notes: 'Registro express por WhatsApp (solo nombre + número)',
+    status: 'pending_whatsapp_confirmation',
+    created_at: now.toISOString()
   };
 
   let saved = false;
@@ -492,18 +473,16 @@ async function submitReservation() {
 
   showConfirmation(reservation);
   btn.disabled = false;
-  btn.textContent = 'Reservar Mesa 🦐';
+  btn.textContent = 'Agendar por WhatsApp 🟢';
 }
 
 function showConfirmation(r) {
   document.getElementById('confirm-detail').innerHTML = `
     <strong>Nombre:</strong> ${r.name}<br>
-    <strong>Fecha:</strong> ${r.date}<br>
-    <strong>Hora:</strong> ${r.time}<br>
-    <strong>Personas:</strong> ${r.guests}<br>
+    <strong>WhatsApp:</strong> ${r.phone}<br>
     <strong>Zona:</strong> ${r.area === 'comedor' ? '🏠 Comedor' : '🏖️ Playa'}<br>
     ${r.table_id ? `<strong>Mesa:</strong> ${r.table_id}<br>` : ''}
-    ${r.notes ? `<strong>Notas:</strong> ${r.notes}` : ''}
+    <em>Te escribimos por WhatsApp para confirmar horario.</em>
   `;
   document.getElementById('booking-form').style.display = 'none';
   document.getElementById('confirmation').style.display = 'block';
@@ -515,16 +494,12 @@ function resetForm() {
   document.getElementById('confirmation').style.display = 'none';
   document.getElementById('name').value = '';
   document.getElementById('phone').value = '';
-  document.getElementById('notes').value = '';
   selectedTable = null;
   renderTables();
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 // ========== INIT ==========
-const today = new Date().toISOString().split('T')[0];
-document.getElementById('date').min = today;
-document.getElementById('date').value = today;
 renderTables();
 </script>
 </body>
