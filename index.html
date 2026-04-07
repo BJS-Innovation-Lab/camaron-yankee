@@ -42,10 +42,10 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(180deg,#ffffff 0%
 background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.7) 60%,rgba(26,26,26,1) 100%),
 url('https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80') center/cover}
 .hero-content{max-width:500px}
-.hero h1{font-family:'Playfair Display',serif;font-size:2.5rem;line-height:1.1;margin-bottom:0.5rem}
-.hero h1 span{color:var(--gold)}
-.hero p{font-weight:300;font-size:1rem;opacity:0.85;margin-bottom:0.3rem}
-.hero .location{font-size:0.85rem;opacity:0.6;display:flex;align-items:center;gap:0.3rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:2.5rem;line-height:1.1;margin-bottom:0.5rem;color:#ffffff;text-shadow:0 4px 18px rgba(0,0,0,0.55)}
+.hero h1 span{color:var(--gold);text-shadow:0 4px 18px rgba(0,0,0,0.5)}
+.hero p{font-weight:400;font-size:1rem;opacity:1;margin-bottom:0.3rem;color:#f4fbff;text-shadow:0 3px 14px rgba(0,0,0,0.5)}
+.hero .location{font-size:0.85rem;opacity:0.96;display:flex;align-items:center;gap:0.3rem;color:#eaf8ff;text-shadow:0 3px 12px rgba(0,0,0,0.45)}
 
 /* SECTIONS */
 section{padding:1.15rem 0.9rem}
@@ -120,7 +120,8 @@ section{padding:1.15rem 0.9rem}
 .form-group input:focus,.form-group select:focus{border-color:#2f8bc2}
 .form-group select option{background:#ffffff;color:#103f5b}
 
-.submit-btn{width:100%;padding:1rem;border:none;border-radius:14px;background:linear-gradient(135deg,#1f92d0,#0a6ea7);color:#ffffff;font-size:1rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.2s;margin-top:1rem;letter-spacing:0.5px;-webkit-tap-highlight-color:transparent}
+.submit-btn{width:100%;padding:1rem;border:none;border-radius:14px;background:linear-gradient(135deg,#1f92d0,#0a6ea7);color:#ffffff;font-size:1rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all 0.2s;margin-top:1rem;letter-spacing:0.5px;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+.submit-btn::before{content:'';width:20px;height:20px;background:url('images/whatsapp-logo.svg') center/contain no-repeat;display:inline-block;flex:0 0 20px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2))}
 .submit-btn:active{transform:scale(0.97)}
 .submit-btn:disabled{opacity:0.5;cursor:not-allowed}
 
@@ -228,7 +229,7 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.6;color:#2a628
       </div>
     </div>
     <p style="font-size:0.8rem;color:#2d6487;opacity:0.85;margin-top:0.4rem">Solo pedimos tu nombre y tu número de WhatsApp. Te contactamos para cerrar detalles.</p>
-    <button class="submit-btn" id="submit-btn" onclick="submitReservation()">Agendar por WhatsApp 🟢</button>
+    <button class="submit-btn" id="submit-btn" onclick="submitReservation()">Agendar por WhatsApp</button>
   </div>
 </section>
 </div>
@@ -430,7 +431,7 @@ async function submitReservation() {
   if (!phone) { showToast('Ingresa tu número de WhatsApp'); return; }
 
   btn.disabled = true;
-  btn.textContent = 'Agendando...';
+  btn.textContent = 'Agendando por WhatsApp...';
 
   const now = new Date();
   const reservation = {
@@ -473,7 +474,7 @@ async function submitReservation() {
 
   showConfirmation(reservation);
   btn.disabled = false;
-  btn.textContent = 'Agendar por WhatsApp 🟢';
+  btn.textContent = 'Agendar por WhatsApp';
 }
 
 function showConfirmation(r) {
