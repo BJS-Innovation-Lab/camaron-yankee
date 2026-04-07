@@ -68,7 +68,7 @@ section{padding:2rem 1.5rem}
 
 .tables-grid{max-width:440px;margin:0 auto}
 .tables-grid.standard-grid{display:grid;grid-template-columns:repeat(6,minmax(42px,1fr));gap:0.5rem}
-.tables-grid.floorplan-grid{display:grid;grid-template-columns:repeat(14,minmax(18px,1fr));grid-template-rows:repeat(18,22px);gap:0.35rem;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.15);border-radius:14px;padding:0.6rem;min-height:470px}
+.tables-grid.floorplan-grid{display:grid;grid-template-columns:repeat(16,minmax(16px,1fr));grid-template-rows:repeat(22,20px);gap:0.36rem;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.15);border-radius:14px;padding:0.7rem;min-height:560px}
 
 .table-btn{position:relative;border-radius:11px;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;transition:all 0.2s;font-size:0.64rem;color:var(--white);padding:0.15rem 0.1rem 0.18rem;-webkit-tap-highlight-color:transparent;overflow:visible}
 .table-btn:active{transform:scale(0.93)}
@@ -84,6 +84,9 @@ section{padding:2rem 1.5rem}
 
 .table-id{position:relative;z-index:2;font-size:0.58rem;font-weight:700;letter-spacing:0.3px;line-height:1}
 .table-btn .seats{position:relative;z-index:2;font-size:0.52rem;opacity:0.74;line-height:1.05}
+.tables-grid.floorplan-grid .table-btn{padding:0.08rem 0.06rem 0.12rem;font-size:0.56rem}
+.tables-grid.floorplan-grid .table-id{font-size:0.54rem}
+.tables-grid.floorplan-grid .table-btn .seats{font-size:0.46rem}
 
 .seat-layer{position:absolute;inset:-6px;pointer-events:none}
 .seat-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.88);transform:translate(-50%,-50%)}
@@ -133,9 +136,9 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.3}
 @media(max-width:380px){
   .hero h1{font-size:2rem}
   .tables-grid.standard-grid{gap:0.35rem;max-width:340px}
-  .tables-grid.floorplan-grid{grid-template-columns:repeat(14,minmax(14px,1fr));grid-template-rows:repeat(18,19px);gap:0.22rem;min-height:410px}
-  .table-btn{font-size:0.58rem}
-  .table-btn .seats{font-size:0.48rem}
+  .tables-grid.floorplan-grid{grid-template-columns:repeat(16,minmax(12px,1fr));grid-template-rows:repeat(22,17px);gap:0.18rem;min-height:420px;padding:0.45rem}
+  .table-btn{font-size:0.56rem}
+  .table-btn .seats{font-size:0.44rem}
   .form-row{flex-direction:column;gap:0.5rem}
 }
 </style>
@@ -307,27 +310,27 @@ const layoutRows = [2, 5, 4, 5, 3, 2];
 const seatPattern = [2,2,4,4,4,6,6,8,2,4,4,6,6,8,2,4,6,8,4,2,2];
 
 const comedorFloorplan = [
-  { id:'C1', row:3, col:4, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C2', row:5, col:1, rowSpan:2, colSpan:2, shape:'square' },
-  { id:'C3', row:3, col:7, rowSpan:2, colSpan:2, shape:'square' },
-  { id:'C4', row:3, col:10, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C5', row:3, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C6', row:3, col:13, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C7', row:5, col:7, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C8', row:6, col:10, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C9', row:6, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C10', row:7, col:13, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C11', row:8, col:7, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C12', row:8, col:9, rowSpan:2, colSpan:2, shape:'square' },
-  { id:'C13', row:8, col:11, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C14', row:9, col:13, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C15', row:10, col:7, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C16', row:10, col:9, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C17', row:10, col:11, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C18', row:12, col:8, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C19', row:12, col:6, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C20', row:12, col:10, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C21', row:4, col:9, rowSpan:2, colSpan:2, shape:'round' }
+  { id:'C1', row:3, col:5, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C2', row:6, col:2, rowSpan:2, colSpan:2, shape:'square' },
+  { id:'C3', row:3, col:8, rowSpan:2, colSpan:2, shape:'square' },
+  { id:'C4', row:3, col:11, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C5', row:3, col:13, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C6', row:3, col:15, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C7', row:6, col:8, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C8', row:8, col:11, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C9', row:8, col:13, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C10', row:9, col:15, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C11', row:10, col:8, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C12', row:10, col:10, rowSpan:2, colSpan:2, shape:'square' },
+  { id:'C13', row:10, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C14', row:11, col:14, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C15', row:12, col:8, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C16', row:12, col:10, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C17', row:12, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C18', row:14, col:10, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C19', row:14, col:7, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C20', row:14, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C21', row:5, col:10, rowSpan:2, colSpan:2, shape:'round' }
 ].map((t, idx) => ({ ...t, seats: seatPattern[idx] ?? 4 }));
 
 function buildTables(prefix) {
@@ -389,20 +392,20 @@ function renderTables() {
 
   if (currentArea === 'comedor') {
     grid.className = 'tables-grid floorplan-grid';
-    hint.textContent = 'Mapa interior (como croquis): acceso playa, barra, cocina y baño';
+    hint.textContent = 'Mapa interior tipo croquis (distribución más fiel al plano físico)';
 
     const labels = `
-      <div class="floor-label access" style="grid-column:6 / span 4; grid-row:1 / span 1;">Acceso Playa</div>
-      <div class="floor-label bath" style="grid-column:12 / span 3; grid-row:12 / span 1;">Baño</div>
-      <div class="floor-label entrance" style="grid-column:1 / span 2; grid-row:14 / span 4;">Entrada</div>
-      <div class="zone-block bar" style="grid-column:8 / span 7; grid-row:14 / span 2;">Barra</div>
-      <div class="zone-block kitchen" style="grid-column:8 / span 7; grid-row:16 / span 3;">Cocina</div>
+      <div class="floor-label access" style="grid-column:7 / span 6; grid-row:1 / span 1;">Acceso Playa</div>
+      <div class="floor-label bath" style="grid-column:14 / span 3; grid-row:14 / span 1;">Baño</div>
+      <div class="floor-label entrance" style="grid-column:1 / span 2; grid-row:16 / span 5;">Entrada</div>
+      <div class="zone-block bar" style="grid-column:10 / span 7; grid-row:17 / span 2;">Barra</div>
+      <div class="zone-block kitchen" style="grid-column:10 / span 7; grid-row:19 / span 3;">Cocina</div>
     `;
 
     const tableHtml = tables.comedor.map(t => {
       const isUnavail = unavailable.includes(t.id);
       const isSel = selectedTable === t.id;
-      const style = `grid-row:${t.row} / span ${t.rowSpan};grid-column:${t.col} / span ${t.colSpan};min-height:50px;`;
+      const style = `grid-row:${t.row} / span ${t.rowSpan};grid-column:${t.col} / span ${t.colSpan};height:100%;min-height:0;`;
       return renderTableButton(t, isSel, isUnavail, style);
     }).join('');
 
