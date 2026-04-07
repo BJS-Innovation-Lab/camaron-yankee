@@ -310,27 +310,27 @@ const layoutRows = [2, 5, 4, 5, 3, 2];
 const seatPattern = [2,2,4,4,4,6,6,8,2,4,4,6,6,8,2,4,6,8,4,2,2];
 
 const comedorFloorplan = [
-  { id:'C1', row:3, col:5, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C2', row:6, col:2, rowSpan:2, colSpan:2, shape:'square' },
-  { id:'C3', row:3, col:8, rowSpan:2, colSpan:2, shape:'square' },
-  { id:'C4', row:3, col:11, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C5', row:3, col:13, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C6', row:3, col:15, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C7', row:6, col:8, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C8', row:8, col:11, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C9', row:8, col:13, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C10', row:9, col:15, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C11', row:10, col:8, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C12', row:10, col:10, rowSpan:2, colSpan:2, shape:'square' },
-  { id:'C13', row:10, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C14', row:11, col:14, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C15', row:12, col:8, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C16', row:12, col:10, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C17', row:12, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C18', row:14, col:10, rowSpan:2, colSpan:2, shape:'rect-h' },
-  { id:'C19', row:14, col:7, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C20', row:14, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
-  { id:'C21', row:5, col:10, rowSpan:2, colSpan:2, shape:'round' }
+  { id:'C1', row:4, col:4, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C2', row:8, col:2, rowSpan:2, colSpan:2, shape:'square' },
+  { id:'C3', row:4, col:8, rowSpan:2, colSpan:2, shape:'square' },
+  { id:'C4', row:4, col:11, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C5', row:4, col:13, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C6', row:4, col:15, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C7', row:8, col:8, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C8', row:10, col:10, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C9', row:10, col:13, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C10', row:11, col:15, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C11', row:12, col:8, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C12', row:12, col:10, rowSpan:2, colSpan:2, shape:'square' },
+  { id:'C13', row:12, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C14', row:13, col:14, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C15', row:14, col:8, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C16', row:14, col:10, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C17', row:14, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C18', row:16, col:10, rowSpan:2, colSpan:2, shape:'rect-h' },
+  { id:'C19', row:16, col:7, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C20', row:16, col:12, rowSpan:2, colSpan:2, shape:'rect-v' },
+  { id:'C21', row:7, col:10, rowSpan:2, colSpan:2, shape:'round' }
 ].map((t, idx) => ({ ...t, seats: seatPattern[idx] ?? 4 }));
 
 function buildTables(prefix) {
@@ -349,24 +349,9 @@ function getRowStart(count) {
   return 1;
 }
 
-const seatDotPreset = {
-  2: [[50,6],[50,94]],
-  3: [[8,50],[92,50],[50,94]],
-  4: [[22,8],[78,8],[22,92],[78,92]],
-  5: [[10,50],[90,50],[24,8],[76,8],[50,92]],
-  6: [[10,34],[10,66],[90,34],[90,66],[30,8],[70,8]],
-  8: [[10,30],[10,70],[90,30],[90,70],[30,8],[70,8],[30,92],[70,92]]
-};
-
-function getSeatDots(count) {
-  const pts = seatDotPreset[count] || seatDotPreset[4];
-  return `<div class="seat-layer">${pts.map(([x,y]) => `<span class="seat-dot" style="left:${x}%;top:${y}%"></span>`).join('')}</div>`;
-}
-
 function renderTableButton(t, isSel, isUnavail, extraStyle = '') {
   const shape = t.shape || 'square';
   return `<div class="table-btn shape-${shape} ${isSel?'selected':''} ${isUnavail?'unavailable':''}" style="${extraStyle}" onclick="selectTable('${t.id}')">
-    ${getSeatDots(t.seats)}
     <span class="table-surface"></span>
     <span class="table-id">${t.id}</span>
     <span class="seats">${t.seats} pers</span>
