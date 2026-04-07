@@ -64,26 +64,32 @@ section{padding:2rem 1.5rem}
 /* TABLE MAP */
 .table-map{background:linear-gradient(180deg,rgba(64,181,173,0.10),rgba(255,255,255,0.03));border-radius:20px;padding:1.2rem 0.85rem;margin-bottom:2rem}
 .table-map-title{font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;opacity:0.5;margin-bottom:0.35rem;text-align:center}
-.table-map-hint{font-size:0.68rem;text-align:center;opacity:0.62;margin-bottom:0.9rem;line-height:1.35}
+.table-map-hint{font-size:0.68rem;text-align:center;opacity:0.78;margin-bottom:0.9rem;line-height:1.35}
+.map-legend{display:flex;justify-content:center;gap:0.85rem;flex-wrap:wrap;margin-top:0.65rem;font-size:0.63rem;opacity:0.85}
+.map-legend span{display:inline-flex;align-items:center;gap:0.3rem}
+.map-dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.map-dot.available{background:rgba(255,255,255,0.20);border:1px solid rgba(255,255,255,0.55)}
+.map-dot.selected{background:rgba(212,168,83,0.32);border:1px solid rgba(212,168,83,0.95)}
+.map-dot.unavailable{background:rgba(148,163,184,0.18);border:1px solid rgba(148,163,184,0.45)}
 
 .tables-grid{max-width:440px;margin:0 auto}
 .tables-grid.standard-grid{display:grid;grid-template-columns:repeat(6,minmax(42px,1fr));gap:0.5rem}
 .tables-grid.floorplan-grid{display:grid;grid-template-columns:repeat(16,minmax(16px,1fr));grid-template-rows:repeat(22,20px);gap:0.36rem;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.15);border-radius:14px;padding:0.7rem;min-height:560px}
 
-.table-btn{position:relative;border-radius:11px;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;transition:all 0.2s;font-size:0.64rem;color:var(--white);padding:0.15rem 0.1rem 0.18rem;-webkit-tap-highlight-color:transparent;overflow:visible}
+.table-btn{position:relative;border-radius:11px;border:1.6px solid rgba(255,255,255,0.42);background:rgba(255,255,255,0.14);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;transition:all 0.2s;font-size:0.66rem;color:#F8FAFC;padding:0.15rem 0.1rem 0.18rem;-webkit-tap-highlight-color:transparent;overflow:visible;backdrop-filter:blur(1px)}
 .table-btn:active{transform:scale(0.93)}
-.table-btn.selected{border-color:var(--gold);background:rgba(212,168,83,0.24);color:var(--gold);box-shadow:0 0 0 1px rgba(212,168,83,0.35) inset}
-.table-btn.unavailable{opacity:0.34;cursor:not-allowed;pointer-events:none}
+.table-btn.selected{border-color:#F5C66B;background:rgba(212,168,83,0.34);color:#FFE8B5;box-shadow:0 0 0 1px rgba(245,198,107,0.62) inset}
+.table-btn.unavailable{opacity:0.55;cursor:not-allowed;pointer-events:none;background:rgba(120,130,146,0.22);border-color:rgba(148,163,184,0.52)}
 
-.table-surface{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,0.12);border:1.2px solid rgba(255,255,255,0.45);border-radius:5px}
-.table-btn.selected .table-surface{border-color:rgba(212,168,83,0.9);background:rgba(212,168,83,0.12)}
+.table-surface{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,0.20);border:1.3px solid rgba(255,255,255,0.78);border-radius:5px}
+.table-btn.selected .table-surface{border-color:rgba(245,198,107,1);background:rgba(245,198,107,0.24)}
 .shape-square .table-surface{width:62%;height:58%}
 .shape-rect-v .table-surface{width:42%;height:72%}
 .shape-rect-h .table-surface{width:72%;height:42%}
 .shape-round .table-surface{width:58%;height:58%;border-radius:999px}
 
-.table-id{position:relative;z-index:2;font-size:0.58rem;font-weight:700;letter-spacing:0.3px;line-height:1}
-.table-btn .seats{position:relative;z-index:2;font-size:0.52rem;opacity:0.74;line-height:1.05}
+.table-id{position:relative;z-index:2;font-size:0.58rem;font-weight:800;letter-spacing:0.32px;line-height:1;color:#F8FAFC;text-shadow:0 1px 1px rgba(0,0,0,0.45)}
+.table-btn .seats{position:relative;z-index:2;font-size:0.52rem;opacity:0.95;line-height:1.05;color:#E2E8F0}
 .tables-grid.floorplan-grid .table-btn{padding:0.08rem 0.06rem 0.12rem;font-size:0.56rem}
 .tables-grid.floorplan-grid .table-id{font-size:0.54rem}
 .tables-grid.floorplan-grid .table-btn .seats{font-size:0.46rem}
@@ -92,10 +98,10 @@ section{padding:2rem 1.5rem}
 .seat-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.88);transform:translate(-50%,-50%)}
 .table-btn.selected .seat-dot{background:var(--gold)}
 
-.floor-label{display:flex;align-items:center;justify-content:center;font-size:0.58rem;text-transform:uppercase;letter-spacing:0.7px;color:rgba(255,255,255,0.7)}
-.floor-label.access{color:#8ef5ea;font-weight:700}
+.floor-label{display:flex;align-items:center;justify-content:center;font-size:0.60rem;text-transform:uppercase;letter-spacing:0.8px;color:rgba(255,255,255,0.88);font-weight:700}
+.floor-label.access{color:#8ef5ea;font-weight:800}
 .floor-label.entrance{writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:1px}
-.floor-label.bath{font-weight:700}
+.floor-label.bath{font-weight:800}
 
 .zone-block{display:flex;align-items:center;justify-content:center;border-radius:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px}
 .zone-block.bar{background:rgba(212,168,83,0.22);border:1px solid rgba(212,168,83,0.45);font-size:0.68rem}
@@ -189,6 +195,11 @@ footer{text-align:center;padding:2rem;font-size:0.75rem;opacity:0.3}
     <div class="table-map-title">Selecciona tu mesa (opcional)</div>
     <div class="table-map-hint">Mapa por filas: 2 • 5 • 4 • 5 • 3 • 2 mesas</div>
     <div class="tables-grid standard-grid" id="tables-grid"></div>
+    <div class="map-legend">
+      <span><i class="map-dot available"></i>Disponible</span>
+      <span><i class="map-dot selected"></i>Seleccionada</span>
+      <span><i class="map-dot unavailable"></i>No disponible</span>
+    </div>
   </div>
 </section>
 
